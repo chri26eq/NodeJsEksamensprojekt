@@ -29,10 +29,18 @@ console.log(email, hashedPassword, nickname)
 }
 
 export async function getNicknameByEmail(email) {
-  const {nickname} = await db.get("SELECT nickname FROM users WHERE email = ?", [email]);
+  const { nickname } = await db.get("SELECT nickname FROM users WHERE email = ?", [email]);
   
   return nickname;
 }
+
+export async function getCashBalanceByEmail(email) {
+  const { cash_balance } = await db.get("SELECT cash_balance FROM users WHERE email = ?", [email]);
+  
+  return cash_balance;
+}
+
+
 
 
 

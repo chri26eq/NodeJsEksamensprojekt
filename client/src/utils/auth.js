@@ -1,9 +1,7 @@
-import { get } from "svelte/store";
 import { fetchGet, fetchPost } from "../utils/fetch.js";
 import { getBaseUrl } from "../stores/urlStore.js";
-import { user, isLoggedIn } from "../stores/userStore.js";
+import { user, isLoggedIn, updateUserContent } from "../stores/userStore.js";
 import toast from "svelte-french-toast";
-
 
 const URL = getBaseUrl();
 
@@ -27,11 +25,12 @@ export async function checkSession() {
 export async function logout() {
   try {
     await fetchPost(URL + "/logout");
-    toast.success("Logged out")
+    toast.success("Logged out");
   } catch (error) {
     console.error("Logout failed", error);
   } finally {
     await checkSession();
+    await updateUserContent();
   }
 }
 
@@ -47,21 +46,24 @@ export async function login(email, password) {
       console.log("Error parsing login response JSON:", error);
     }
 
-    return {status: response.status, data: data};
+    return { status: response.status, data: data };
   } catch (error) {
     console.error("Error:", error);
     return { status: 500, data: null };
   } finally {
     await checkSession();
+    await updateUserContent();
   }
 }
 
 export async function signUp(email, password, nickname) {
   try {
-    const response = await fetchPost(URL + "/signup", { email, password, nickname });
+    const response = await fetchPost(URL + "/signup", {
+      email,
+      password,
+      nickname,
+    });
     let data = null;
-
-    
 
     try {
       data = await response.json();
@@ -69,8 +71,7 @@ export async function signUp(email, password, nickname) {
       console.log("Error parsing login response JSON:", error);
     }
 
-    return {status: response.status, data: data};
-    
+    return { status: response.status, data: data };
   } catch (error) {
     console.error("Sign up error", error);
     return { status: 500 };
