@@ -2,6 +2,7 @@ import { fetchGet, fetchPost } from "../utils/fetch.js";
 import { getBaseUrl } from "../stores/urlStore.js";
 import { user, isLoggedIn, updateUserContent } from "../stores/userStore.js";
 import toast from "svelte-french-toast";
+import { navigate } from "svelte-routing";
 
 const URL = getBaseUrl();
 
@@ -25,6 +26,7 @@ export async function checkSession() {
 export async function logout() {
   try {
     await fetchPost(URL + "/logout");
+    navigate("/", { replace: true })
     toast.success("Logged out");
   } catch (error) {
     console.error("Logout failed", error);

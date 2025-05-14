@@ -46,6 +46,9 @@
             <Link to="/yourcards" let:active
               ><NavbarItem text="Your Cards" {active} /></Link
             >
+            <Link to="/buycards" let:active
+              ><NavbarItem text="Buy Cards" {active} /></Link
+            >
             <Link to="/match" let:active
               ><NavbarItem text="Find Match" {active} /></Link
             >

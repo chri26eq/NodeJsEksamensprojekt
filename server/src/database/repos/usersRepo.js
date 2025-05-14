@@ -34,6 +34,12 @@ export async function getNicknameByEmail(email) {
   return nickname;
 }
 
+export async function getUserIdByEmail(email) {
+  const { id } = await db.get("SELECT id FROM users WHERE email = ?", [email]);
+  
+  return id;
+}
+
 export async function getCashBalanceByEmail(email) {
   const { cash_balance } = await db.get("SELECT cash_balance FROM users WHERE email = ?", [email]);
   
