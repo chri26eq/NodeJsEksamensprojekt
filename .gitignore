@@ -1,5 +1,5 @@
 # Database
-server/*.db
+*.db
 
 # Logs
 logs
