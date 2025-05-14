@@ -1,9 +1,15 @@
-import db from '../connection.js';
-import { encrypt, compare } from '../../utils/hashing.js';
+import db from "../connection.js"
+import { encrypt, compare } from "../../utils/hashing.js"
 
 
 export async function emailExists(email) {
   const result = await db.get("SELECT email FROM users WHERE email = ?", [email]);
+  
+  return !!result;
+}
+
+export async function nicknameExists(nickname) {
+  const result = await db.get("SELECT nickname FROM users WHERE nickname = ?", [nickname]);
   
   return !!result;
 }
@@ -16,12 +22,17 @@ export async function userCredentialsMatches(email, password) {
 }
 
 
-export async function addUser(email, password) {
+export async function addUser(email, password, nickname) {
   const hashedPassword = await encrypt(password);
-
+console.log(email, hashedPassword, nickname)
   await db.run("INSERT INTO users (email, password, nickname) VALUES (?, ?, ?)", [email, hashedPassword, nickname]);
 }
 
+export async function getNicknameByEmail(email) {
+  const {nickname} = await db.get("SELECT nickname FROM users WHERE email = ?", [email]);
+  
+  return nickname;
+}
 
 
 

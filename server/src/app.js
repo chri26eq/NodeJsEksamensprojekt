@@ -23,6 +23,13 @@ app.use(
   })
 );
 
+import authRouter from "./routers/authRouter.js";
+app.use(authRouter);
+import gameContentRouter from "./routers/gameContentRouter.js";
+app.use(gameContentRouter);
+import usersRouter from "./routers/usersRouter.js"
+app.use(usersRouter);
+
 
 const PORT = Number(process.env.PORT) || 8080;
 const server = app.listen(PORT, () =>

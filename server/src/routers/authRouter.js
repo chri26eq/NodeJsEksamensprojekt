@@ -2,8 +2,10 @@ import { Router } from "express";
 
 import {
   emailExists,
+  nicknameExists,
   userCredentialsMatches,
   addUser,
+  getNicknameByEmail,
 } from "../database/repos/usersRepo.js";
 
 import { sendMail } from "../utils/mailer/mailer.js";
@@ -12,16 +14,21 @@ import * as mailTemplate from "../utils/mailer/mailTemplates.js";
 const router = Router();
 
 router.post("/signup", async (req, res) => {
-
-  const { email, password } = req.body;
-
+  const { email, password, nickname } = req.body;
+  console.log(email, password, nickname)
   try {
     if (await emailExists(email)) {
       res.status(409).send({ error: "Email already exists" });
+    } else if (await nicknameExists(nickname)) {
+      res.status(409).send({ error: "Nickname already exists" });
     } else {
-      await addUser(email, password);
+      await addUser(email, password, nickname);
       // sendMail(email, mailTemplate.welcomeSubject, mailTemplate.welcomeContent); // TODO REMOVE COMMENT
-      res.send({ message: "Signup successful", user: email });
+      res.send({
+        message: "Signup successful",
+        email: email,
+        nickname: nickname,
+      });
     }
   } catch (error) {
     console.error("Error during signup:", error);
@@ -37,7 +44,12 @@ router.post("/login", async (req, res) => {
       req.session.user = {
         email: email,
       };
-      res.send({ message: "Login successful", user: req.session.user });
+      const nickname = await getNicknameByEmail(email);
+      res.send({
+        message: "Login successful",
+        email: email,
+        nickname: nickname,
+      });
     } else {
       res.status(401).send({ error: "Invalid credentials" });
     }

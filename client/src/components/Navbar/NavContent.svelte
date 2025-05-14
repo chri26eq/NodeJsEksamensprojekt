@@ -1,5 +1,5 @@
 <script>
-  import { Router, Link, Route } from "svelte-routing";
+  import { Router, Route } from "svelte-routing";
 
   import HomePage from "../../pages/HomePage.svelte";
   import LogInPage from "../../pages/auth/LogInPage.svelte";
@@ -7,7 +7,6 @@
   import ChooseCardsPage from "../../pages/ChooseCardsPage.svelte";
   import YourCardsPage from "../../pages/YourCardsPage.svelte";
   import MatchPage from "../../pages/MatchPage.svelte";
-  import NavItem from "./NavItem.svelte";
 
   const { url = "" } = $props();
 </script>

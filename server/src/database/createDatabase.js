@@ -42,7 +42,7 @@ await db.exec(`
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     nickname TEXT UNIQUE NOT NULL,
-    cash_balance INTEGER NOT NULL
+    cash_balance INTEGER NOT NULL DEFAULT 10000
   );
 
 

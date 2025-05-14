@@ -1,12 +1,12 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "src/app.js",
   "scripts": {
     "start": "node .",
     "nodemon": "nodemon .",
-    "setupDatabase": "node ./database/createDatabase.js",
-    "resetDatabase": "node ./database/createDatabase.js --delete"
+    "setupDatabase": "node ./src/database/createDatabase.js",
+    "resetDatabase": "node ./src/database/createDatabase.js --delete"
   },
   "keywords": [],
   "author": "",
