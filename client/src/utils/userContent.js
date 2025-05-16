@@ -7,7 +7,7 @@ const URL = getBaseUrl();
 
 export async function getCashBalance() {
   try {
-    const response = await fetchGet(URL + "/cashbalance");
+    const response = await fetchGet(URL + "/users/cashbalance");
     if (!response.ok) {
       throw new Error("Bad response from server");
     }

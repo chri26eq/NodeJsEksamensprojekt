@@ -10,7 +10,7 @@ const router = Router();
 let userEmail;
 let userId;
 
-router.all("/{*splat}", async (req, res, next) => {
+router.all("/users/{*splat}", async (req, res, next) => {
   if (req.session.user) {
     userEmail = req.session.user.email;
     userId = await getUserIdByEmail(userEmail);
@@ -20,18 +20,22 @@ router.all("/{*splat}", async (req, res, next) => {
   }
 });
 
-router.get("/cashbalance", async (req, res) => {
+router.get("/users/cashbalance", async (req, res) => {
   
   try {
     const cashBalance = await getCashBalanceByEmail(userEmail);
     res.send({ cashBalance: cashBalance });
   } catch (error) {
-    console.error("Error during GET: /cashbalance:", error);
+    console.error("Error during GET: /users/cashbalance:", error);
     res.status(500).send({ error: "Internal server error" });
   }
 });
 
-router.post("/usercars", async (req, res) => {
+
+
+
+
+router.post("/users/usercars", async (req, res) => {
   const carIds = req.body.carIds;
   try {
     await addCarsToUser(userId, carIds);
@@ -44,10 +48,10 @@ router.post("/usercars", async (req, res) => {
     console.error("Error during POST: /usercars:", error);
     res.status(500).send({ error: "Internal server error" });
   }
-  
-
 
   res.sendStatus(200);
 });
+
+
 
 export default router;

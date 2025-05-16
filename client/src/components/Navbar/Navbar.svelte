@@ -40,9 +40,6 @@
           <Link to="/" let:active><NavbarItem text="Home" {active} /></Link>
 
           {#if $isLoggedIn}
-            <Link to="/choosecards" let:active
-              ><NavbarItem text="Choose Cards" {active} /></Link
-            >
             <Link to="/yourcards" let:active
               ><NavbarItem text="Your Cards" {active} /></Link
             >

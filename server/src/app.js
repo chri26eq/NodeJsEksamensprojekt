@@ -29,6 +29,8 @@ import gameContentRouter from "./routers/gameContentRouter.js";
 app.use(gameContentRouter);
 import usersRouter from "./routers/usersRouter.js"
 app.use(usersRouter);
+import shopRouter from "./routers/shopRouter.js"
+app.use(shopRouter);
 
 
 const PORT = Number(process.env.PORT) || 8080;

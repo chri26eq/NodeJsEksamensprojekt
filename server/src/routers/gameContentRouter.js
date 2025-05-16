@@ -5,7 +5,7 @@ import { getCarBrands } from "../database/repos/carBrandsRepo.js";
 
 const router = Router();
 
-router.get("/content", async (req, res) => {
+router.get("/game/content", async (req, res) => {
   const countries = await getCountries();
   const carBrands = await getCarBrands();
 

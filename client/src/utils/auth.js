@@ -8,7 +8,7 @@ const URL = getBaseUrl();
 
 export async function checkSession() {
   try {
-    const response = await fetchGet(URL + "/checksession");
+    const response = await fetchGet(URL + "/auth/checksession");
     if (!response.ok) {
       throw new Error("Bad response from server");
     }
@@ -25,7 +25,7 @@ export async function checkSession() {
 
 export async function logout() {
   try {
-    await fetchPost(URL + "/logout");
+    await fetchPost(URL + "/auth/logout");
     navigate("/", { replace: true })
     toast.success("Logged out");
   } catch (error) {
@@ -38,7 +38,7 @@ export async function logout() {
 
 export async function login(email, password) {
   try {
-    const response = await fetchPost(URL + "/login", { email, password });
+    const response = await fetchPost(URL + "/auth/login", { email, password });
 
     let data = null;
 
@@ -60,7 +60,7 @@ export async function login(email, password) {
 
 export async function signUp(email, password, nickname) {
   try {
-    const response = await fetchPost(URL + "/signup", {
+    const response = await fetchPost(URL + "/auth/signup", {
       email,
       password,
       nickname,

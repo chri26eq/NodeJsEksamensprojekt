@@ -13,9 +13,8 @@ import * as mailTemplate from "../utils/mailer/mailTemplates.js";
 
 const router = Router();
 
-router.post("/signup", async (req, res) => {
+router.post("/auth/signup", async (req, res) => {
   const { email, password, nickname } = req.body;
-  console.log(email, password, nickname)
   try {
     if (await emailExists(email)) {
       res.status(409).send({ error: "Email already exists" });
@@ -36,7 +35,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/auth/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     const matches = await userCredentialsMatches(email, password);
@@ -59,7 +58,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/logout", (req, res) => {
+router.post("/auth/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       res.status(500).send({ error: "Logout failed" });
@@ -69,7 +68,7 @@ router.post("/logout", (req, res) => {
   });
 });
 
-router.get("/checksession", (req, res) => {
+router.get("/auth/checksession", (req, res) => {
   if (req.session.user) {
     res.send({ isLoggedIn: true, user: req.session.user });
   } else {
