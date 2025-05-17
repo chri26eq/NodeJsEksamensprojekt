@@ -7,7 +7,7 @@
   import { updateUserContentFromServer } from "../../stores/userStore";
   import { upgradeCar } from "../../utils/shop";
   import toast from "svelte-french-toast";
-  import BuyModal from "../BuyModal.svelte";
+  import BuySellModal from "../BuySellModal.svelte";
 
   let { car } = $props();
   let isUpgraded = $state(car.upgraded);
@@ -63,19 +63,14 @@
     <!-- Modal overlay -->
     <!-- svelte-ignore a11y_click_events_have_key_events -->
     <!-- svelte-ignore a11y_no_static_element_interactions -->
-    <div
-      onclick={(event) => event.stopPropagation()}
-      class="fixed inset-0 bg-black/30 flex justify-center items-center z-50"
-    >
-      <!-- Modal content -->
-
-      <BuyModal
+    
+      <BuySellModal
         title={modalTitle}
         message={modalMessage}
         price={upgradePrice}
         onClickConfirm={confirmUpgrade}
         onClickCancel={cancelUpgrade}
       />
-    </div>
+    
   {/if}
 </div>

@@ -26,7 +26,15 @@ export function fetchPatch(url, body) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
+}
 
-    
+export function fetchDelete(url, body) {
+  
+    return fetch(url, {
+      method: "DELETE",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
 }
 

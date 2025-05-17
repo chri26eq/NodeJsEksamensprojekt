@@ -7,6 +7,7 @@ import {
 } from "../database/repos/usersRepo.js";
 import {
   addCarsToUser,
+  getNewestUserCarsByUserId,
   updateCarIsUpgraded,
 } from "../database/repos/userCarsRepo.js";
 import { generateCarPack } from "../utils/gameLogic/carPacks.js";
@@ -31,6 +32,7 @@ router.all("/shop/{*splat}", async (req, res, next) => {
 
 router.post("/shop/buypack", async (req, res) => {
   const price = req.body.price;
+  const packSize = req.body.packSize;
   try {
     const sufficientFunds = await addToCashBalanceByEmail(
       userEmail,
@@ -43,15 +45,18 @@ router.post("/shop/buypack", async (req, res) => {
       });
       return;
     }
+    
     updateCashBalanceByEmail(userEmail, cashBalance - price);
-    const cars = await generateCarPack(5);
-    const carIds = cars.map((car) => car.id);
+    const packCars = await generateCarPack(packSize);
+    const carIds = packCars.map((car) => car.id);
 
     await addCarsToUser(userId, carIds);
+    const newCars = await getNewestUserCarsByUserId(userId, packSize)
+    
     res.send({
       message: "Pack bought",
       email: userEmail,
-      cars: carIds,
+      cars: newCars,
     });
   } catch (error) {
     console.error("Error during POST: /shop/buypack:", error);

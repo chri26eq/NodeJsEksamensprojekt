@@ -1,4 +1,4 @@
-import { applyPerformancePoints } from "../../utils/gameLogic/performancePointsCalc.js";
+import { applyPerformancePoints } from "../../utils/gameLogic/carEnhancements.js"
 import db from "../connection.js";
 
 export async function getCarModels() {

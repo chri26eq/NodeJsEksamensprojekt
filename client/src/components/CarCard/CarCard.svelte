@@ -1,12 +1,11 @@
 <script>
-
-
   import CarCardExpanded from "./CarCardExpanded.svelte";
   import FavoriteButton from "./FavoriteButton.svelte";
+  import SellCarButton from "./SellCarButton.svelte";
   import UpgradeButton from "./UpgradeButton.svelte";
 
-  const {car} = $props();
-  let showModal = $state(false)
+  const { car, preview = false } = $props();
+  let showModal = $state(false);
 
   function closeModal() {
     showModal = false;
@@ -14,7 +13,7 @@
   function openModal() {
     showModal = true;
   }
-  
+
   function handleKeyPress(event) {
     if (event.key === "Enter" || event.key === " ") {
       openModal();
@@ -36,19 +35,18 @@
       <p class="text-[0.7em] ml-1">{car.model_name}</p>
     </div>
     <div class="flex flex-6 bg-amber-700">
-      <div class="bg-cyan-300 flex-7">
-
+      <div class="bg-cyan-300 flex-7"></div>
+      <div class="flex flex-col bg-cyan-500 flex-1">
+        {#if !preview}
+          <FavoriteButton {car} />
+          <UpgradeButton {car} />
+          <SellCarButton {car} />
+        {/if}
       </div>
-    <div class="flex flex-col bg-cyan-500 flex-1">
-
-      <FavoriteButton car={car}/>
-      <UpgradeButton car={car}/>
     </div>
-      </div>
-      
+
     <div class="flex-4 bg-amber-500"></div>
   </div>
-
 
   {#if showModal}
     <div class="fixed inset-0 flex justify-center items-center">
