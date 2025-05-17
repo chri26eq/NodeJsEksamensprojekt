@@ -27,7 +27,6 @@ export async function userCredentialsMatches(email, password) {
 
 export async function addUser(email, password, nickname) {
   const hashedPassword = await encrypt(password);
-  console.log(email, hashedPassword, nickname);
   await db.run(
     "INSERT INTO users (email, password, nickname) VALUES (?, ?, ?)",
     [email, hashedPassword, nickname]
@@ -65,4 +64,14 @@ export async function updateCashBalanceByEmail(email, newBalance) {
   );
   
   return !!result;
+}
+
+export async function addToCashBalanceByEmail(email, amount) {
+  const oldBalance = await getCashBalanceByEmail(email);
+  if (amount < 0 && Math.abs(amount) > oldBalance) {
+    return false;
+  }
+  const result = await updateCashBalanceByEmail(email, oldBalance + amount)
+  if (!result) throw new Error("DB error"); 
+  return true;
 }

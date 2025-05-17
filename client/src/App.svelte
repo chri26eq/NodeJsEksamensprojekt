@@ -4,13 +4,13 @@
   import NavContent from "./components/Navbar/NavContent.svelte";
   import { Toaster }  from "svelte-french-toast";
   import { checkSession } from "./utils/auth";
-  import { isLoggedIn, updateUserContent } from "./stores/userStore";
-  const { url = "" } = $props()
+  import { isLoggedIn, updateUserContentFromServer } from "./stores/userStore";
 
   onMount(async () => {
     await checkSession();
     if ($isLoggedIn)
-    updateUserContent();
+    updateUserContentFromServer();
+  
   });
 </script>
 
@@ -18,4 +18,4 @@
 <Navbar/>
 
 <NavContent/>
-<Toaster position="top-right" />
+<Toaster position="bottom-center" />

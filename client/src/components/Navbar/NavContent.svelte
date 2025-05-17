@@ -11,7 +11,7 @@
   const { url = "" } = $props();
 </script>
 
-<div class="min-h-screen bg-green-100 pt-20">
+<div class="min-h-screen bg-green-100 pt-23 pb-6 px-2">
   <Router {url}>
     <Route path="/"><HomePage /></Route>
 

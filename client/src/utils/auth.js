@@ -1,6 +1,6 @@
 import { fetchGet, fetchPost } from "../utils/fetch.js";
 import { getBaseUrl } from "../stores/urlStore.js";
-import { user, isLoggedIn, updateUserContent } from "../stores/userStore.js";
+import { user, isLoggedIn, updateUserContentFromServer } from "../stores/userStore.js";
 import toast from "svelte-french-toast";
 import { navigate } from "svelte-routing";
 
@@ -32,7 +32,7 @@ export async function logout() {
     console.error("Logout failed", error);
   } finally {
     await checkSession();
-    await updateUserContent();
+    await updateUserContentFromServer();
   }
 }
 
@@ -54,7 +54,7 @@ export async function login(email, password) {
     return { status: 500, data: null };
   } finally {
     await checkSession();
-    await updateUserContent();
+    await updateUserContentFromServer();
   }
 }
 

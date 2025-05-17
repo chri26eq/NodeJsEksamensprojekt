@@ -1,21 +1,39 @@
 import { fetchPost } from "../utils/fetch.js";
 import { getBaseUrl } from "../stores/urlStore.js";
 import toast from "svelte-french-toast";
-import { updateUserContent } from "../stores/userStore.js";
+import { updateUserContentFromServer } from "../stores/userStore.js";
 
 const URL = getBaseUrl();
 
-export async function buyCarPack() {
+export async function buyCarPack(packPrice) {
   try {
-    const response = await fetchPost(URL + "/shop/buypack");
+    const response = await fetchPost(URL + "/shop/buypack", {price: packPrice});
     if (response.status == 402) {
-      toast.error("Not enough CarCash");
+      return { message: "Not enough CarCash" };
     }
     if (response.ok) {
       const result = await response.json();
-      toast.success(result.message);
-      updateUserContent();
-      return result.cars;
+
+      updateUserContentFromServer();
+      return { cars: result.cars, message: result.message };
+    }
+  } catch (error) {
+    throw new Error("Error", error);
+  }
+}
+
+export async function upgradeCar(car) {
+  try {
+    const response = await fetchPost(URL + "/shop/upgradecar", {
+      user_car_id: car.user_car_id,
+      upgraded: car.upgraded,
+    });
+    if (response.status == 402) {
+      return false;
+    }
+    if (response.ok) {
+      updateUserContentFromServer();
+      return true;
     }
   } catch (error) {
     throw new Error("Error", error);
