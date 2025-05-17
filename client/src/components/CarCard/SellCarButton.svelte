@@ -1,7 +1,5 @@
 <script>
   import {
-    CheckPlusCircleOutline,
-    CirclePlusOutline,
     CashOutline,
   } from "flowbite-svelte-icons";
   import { updateUserContentFromServer } from "../../stores/userStore";
@@ -10,7 +8,6 @@
   import BuySellModal from "../BuySellModal.svelte";
 
   let { car } = $props();
-  let isUpgraded = $state(car.upgraded);
   let showModal = $state(false);
 
   const carBrand = car.brand_name;

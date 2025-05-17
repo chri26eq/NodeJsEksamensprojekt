@@ -1,6 +1,5 @@
 <script>
   import { HeartOutline, HeartSolid } from "flowbite-svelte-icons";
-  import { updateUserContentFromServer } from "../../stores/userStore";
   import { updateUserCarsIsFavorite } from "../../utils/userContent";
   import toast from "svelte-french-toast";
   let { car } = $props();
@@ -8,11 +7,10 @@
 
   async function handleButtonClick(event) {
     event.stopPropagation();
-    car.favorite = !isFavorite;
     isFavorite = !isFavorite;
     const message = await updateUserCarsIsFavorite(
       car.user_car_id,
-      car.favorite
+      isFavorite
 
     );
     toast.success(message);
