@@ -7,7 +7,7 @@
   import YourCardsPage from "../../pages/YourCardsPage.svelte";
   import BuyPacksPage from "../../pages/BuyPacksPage.svelte";
   import MatchPage from "../../pages/MatchPage.svelte";
-  import PrivateRoute from "../private/PrivateRoute.svelte";
+  import PrivateRoute from "../PrivateRoute/PrivateRoute.svelte";
 
   const { url = "" } = $props();
 </script>

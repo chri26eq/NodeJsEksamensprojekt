@@ -17,6 +17,29 @@
   let password = $state("!QAZ2wsx");
   let passwordConfirm = $state("!QAZ2wsx");
 
+
+  async function handleSignUp() {
+  const response = await signUp(email, password, nickname);
+
+  if (response.status === 200) {
+    email = "";
+    password = "";
+    passwordConfirm = "";
+    navigate("/login", { replace: true });
+    return "Sign up successful!";
+  } else if (response.status === 409) {
+    email = "";
+    password = "";
+    passwordConfirm = "";
+    throw new Error(response.data.error);
+  } else {
+    password = "";
+    throw new Error("Something went wrong");
+  }
+}
+
+
+
   function validateInputs() {
     if (!areFieldsFilled(email, nickname, password, passwordConfirm)) {
       toast.error("All fields must be filled out");
@@ -54,33 +77,25 @@
     return true;
   }
 
-  async function signUpButtonHandler(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     if (!validateInputs()) {
       return;
     }
 
-    const response = await signUp(email, password, nickname);
-    if (response.status === 200) {
-      email = "";
-      password = "";
-      passwordConfirm = "";
-      toast.success("Sign Up successful!");
-      navigate("/login", { replace: true });
-    } else if (response.status === 409) {
-      toast.error(response.data.error);
-      email = "";
-      password = "";
-      passwordConfirm = "";
-    } else {
-      toast.error("Something went wrong");
-      password = "";
-    }
+    toast.promise(
+  handleSignUp(),
+  {
+    loading: "Signing up...",
+    success: (msg) => msg,
+    error: (err) => err.message
+  }
+);
   }
 </script>
 
-<form onsubmit={signUpButtonHandler} class="max-w-sm mx-auto">
+<form onsubmit={handleSubmit} class="max-w-sm mx-auto">
   <div class="mb-5">
     <label
       for="email"
