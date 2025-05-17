@@ -7,6 +7,7 @@
   import YourCardsPage from "../../pages/YourCardsPage.svelte";
   import BuyPacksPage from "../../pages/BuyPacksPage.svelte";
   import MatchPage from "../../pages/MatchPage.svelte";
+  import PrivateRoute from "../private/PrivateRoute.svelte";
 
   const { url = "" } = $props();
 </script>
@@ -15,11 +16,13 @@
   <Router {url}>
     <Route path="/"><HomePage /></Route>
 
-    <Route path="/yourcards"><YourCardsPage /></Route>
-    <Route path="/buycards"><BuyPacksPage /></Route>
-    <Route path="/match"><MatchPage /></Route>
+    <Route path="/yourcards"><PrivateRoute><YourCardsPage /></PrivateRoute></Route>
+    <Route path="/buycards"><PrivateRoute><BuyPacksPage /></PrivateRoute></Route>
+    <Route path="/match"><PrivateRoute><MatchPage /></PrivateRoute></Route>
 
     <Route path="/login"><LogInPage /></Route>
     <Route path="/signup"><SignUpPage /></Route>
   </Router>
 </div>
+
+
