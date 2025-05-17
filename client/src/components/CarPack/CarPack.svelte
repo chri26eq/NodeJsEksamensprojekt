@@ -68,20 +68,18 @@
 {/if}
 
 {#if showResultModal}
-  <div
-      class="fixed inset-0 bg-black/30 flex justify-center items-center z-50"
-  >
-    <div class="bg-white rounded-2xl shadow-lg p-6 max-w-4xl w-full">
-      <h2 class="text-xl font-bold mb-4">You got:</h2>
+  <div class="fixed inset-0 bg-black/30 flex justify-center items-center z-50">
+    <div class="bg-black/70 rounded-2xl shadow-lg p-6 max-w-4xl w-full">
+      <div class="my-2 flex justify-between align-middle">
+        <h2 class="text-white text-xl font-bold mb-4">You got:</h2>
+        <Button color="light" onclick={closeResultModal}>Close</Button>
+      </div>
       <div
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-h-[70vh] overflow-y-auto"
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-h-[70vh] overflow-y-auto py-3"
       >
         {#each newCars as car}
-          <CarCard {car} preview/>
+          <CarCard {car} preview />
         {/each}
-      </div>
-      <div class="mt-6 flex justify-end">
-        <Button color="light" onclick={closeResultModal}>Close</Button>
       </div>
     </div>
   </div>
