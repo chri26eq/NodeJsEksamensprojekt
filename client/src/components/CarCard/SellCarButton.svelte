@@ -3,20 +3,21 @@
     CashOutline,
   } from "flowbite-svelte-icons";
   import { updateUserContentFromServer } from "../../stores/userStore";
-  import { sellCar, upgradeCar } from "../../utils/shop";
+  import { sellCar } from "../../utils/shop";
   import toast from "svelte-french-toast";
   import BuySellModal from "../BuySellModal.svelte";
 
   let { car } = $props();
   let showModal = $state(false);
 
-  const carBrand = car.brand_name;
-  const carModel = car.model_name;
-  const carValue = car.value;
+  let carBrand = $derived(car.brand_name);
+let carModel = $derived(car.model_name);
+let carValue = $derived(car.value);
+
 
   const modalTitle = "Sell Car?";
-  const modalMessage = `Do you want to sell your ${carBrand} ${carModel} for ${carValue} CarCash?`;
-
+  let modalMessage = $derived(`Do you want to sell your ${carBrand} ${carModel} for ${carValue} CarCash?`
+);
   function openSellModal(event) {
     event.stopPropagation();
     showModal = true;
@@ -27,7 +28,7 @@
 
     const { success, message, value } = await sellCar(car);
     if (success) {
-      toast.success("Car sold");
+      toast.success("Car sold for " + value);
     } else {
       toast.error(message);
     }

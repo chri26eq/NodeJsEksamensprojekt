@@ -10,15 +10,15 @@
   import BuySellModal from "../BuySellModal.svelte";
 
   let { car } = $props();
-  let isUpgraded = $state(car.upgraded);
+  
+  let isUpgraded = $derived(car.upgraded);
   let showModal = $state(false);
 
-  const carBrand = car.brand_name;
-  const carModel = car.model_name;
+  
 
   const upgradePrice = 2000;
   const modalTitle = "Upgrade Car?";
-  const modalMessage = `Do you want to pay ${upgradePrice} CarCash to upgrade your ${carBrand} ${carModel}?`;
+  const modalMessage = $derived(`Do you want to pay ${upgradePrice} CarCash to upgrade your ${car.brand_name} ${car.model_name}?`);
 
   function openUpgradeModal(event) {
     event.stopPropagation();
