@@ -28,7 +28,7 @@ let carValue = $derived(car.value);
 
     const { success, message, value } = await sellCar(car);
     if (success) {
-      toast.success("Car sold for " + value);
+      toast.success("Car sold for " + value + " CarCash");
     } else {
       toast.error(message);
     }
