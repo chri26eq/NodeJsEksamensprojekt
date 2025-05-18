@@ -5,6 +5,7 @@ const deleteMode = process.argv.includes("--delete");
 if (deleteMode) {
   await db.run(`DROP TABLE IF EXISTS user_cars;`);
   await db.run(`DROP TABLE IF EXISTS users;`);
+  await db.run(`DROP TABLE IF EXISTS tracks;`);
   await db.run(`DROP TABLE IF EXISTS car_models;`);
   await db.run(`DROP TABLE IF EXISTS car_brands;`);
   await db.run(`DROP TABLE IF EXISTS countries;`);
@@ -35,6 +36,14 @@ await db.exec(`
     drivetrain TEXT CHECK(drivetrain IN ('FWD', 'RWD', '4X4')),
     tyres TEXT CHECK(tyres IN ('Standard', 'Performance', 'Slicks', 'All-terrain', 'Offroad')),
     FOREIGN KEY (car_brand_id) REFERENCES car_brands (id)
+  );
+  
+  CREATE TABLE IF NOT EXISTS tracks (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  length INTEGER NOT NULL,
+  num_corners INTEGER NOT NULL,
+  surface TEXT NOT NULL CHECK(surface IN ('Asphalt', 'Gravel', 'Snow', 'Sand'))
   );
 
   CREATE TABLE IF NOT EXISTS users (
@@ -468,4 +477,38 @@ if (deleteMode) {
     ('Arteon R', 270, 430, 80, '4X4', 'Performance', 56),
     ('S60 Polestar Engineered', 250, 400, 85, '4X4', 'Performance', 57);
   `);
+
+  await db.run(`
+  INSERT INTO tracks (name, length, num_corners, surface) VALUES
+    ('Silverstone Circuit', 5891, 18, 'Asphalt'),
+    ('Rally Finland', 20750, 34, 'Gravel'),
+    ('Nürburgring Nordschleife', 20832, 73, 'Asphalt'),
+    ('Monaco GP', 3337, 19, 'Asphalt'),
+    ('Dakar Stage 5', 35000, 20, 'Sand'),
+    ('Mount Panorama', 6213, 23, 'Asphalt'),
+    ('Desert Drift', 4500, 14, 'Sand'),   
+    ('Tokyo Street Circuit', 5120, 16, 'Asphalt'),
+    ('Algarve Offroad', 6000, 22, 'Dirt'),
+    ('Sahara Sprint', 8000, 10, 'Sand'),
+    ('Canadian Rally', 12500, 26, 'Gravel'),
+    ('Rainy Ring', 3000, 12, 'Asphalt'),
+    ('Amazon Challenge', 9800, 17, 'Dirt'),
+    ('Rocky Mountain Pass', 7200, 20, 'Gravel'),
+    ('Savannah Run', 4100, 11, 'Dirt'), 
+    ('Coastal Cruise', 5800, 15, 'Asphalt'),
+    ('Urban Chaos', 4700, 18, 'Asphalt'),
+    ('Forest Trail', 6300, 25, 'Dirt'),
+    ('Dubai Desert Dash', 9000, 8, 'Sand'),
+    ('Red Canyon Rally', 10400, 27, 'Gravel'),
+    ('Barcelona GP Circuit', 4655, 16, 'Asphalt'),
+    ('Hockenheimring', 4574, 17, 'Asphalt'),
+    ('Imola Circuit', 4909, 19, 'Asphalt'),
+    ('Zandvoort Circuit', 4259, 14, 'Asphalt'),
+    ('Laguna Seca', 3602, 11, 'Asphalt'),
+    ('Spa-Francorchamps', 7004, 20, 'Asphalt'),
+    ('Paul Ricard Circuit', 5842, 15, 'Asphalt'),
+    ('Interlagos', 4309, 15, 'Asphalt'),
+    ('Suzuka Circuit', 5807, 18, 'Asphalt'),
+    ('Austin GP Circuit', 5513, 20, 'Asphalt');
+  `)
 }
