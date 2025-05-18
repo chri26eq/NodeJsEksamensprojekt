@@ -3,12 +3,16 @@ import db from "./connection.js";
 const deleteMode = process.argv.includes("--delete");
 
 if (deleteMode) {
-  await db.run(`DROP TABLE IF EXISTS user_cars;`);
-  await db.run(`DROP TABLE IF EXISTS users;`);
-  await db.run(`DROP TABLE IF EXISTS tracks;`);
-  await db.run(`DROP TABLE IF EXISTS car_models;`);
-  await db.run(`DROP TABLE IF EXISTS car_brands;`);
-  await db.run(`DROP TABLE IF EXISTS countries;`);
+  await db.run("DROP TABLE IF EXISTS room_user_cars;");
+  await db.run("DROP TABLE IF EXISTS room_tracks;");
+  await db.run("DROP TABLE IF EXISTS rooms;");
+  
+  await db.run("DROP TABLE IF EXISTS user_cars;");
+  await db.run("DROP TABLE IF EXISTS users;");
+  await db.run("DROP TABLE IF EXISTS tracks;");
+  await db.run("DROP TABLE IF EXISTS car_models;");
+  await db.run("DROP TABLE IF EXISTS car_brands;");
+  await db.run("DROP TABLE IF EXISTS countries;");
 }
 
 await db.exec(`
@@ -39,11 +43,11 @@ await db.exec(`
   );
   
   CREATE TABLE IF NOT EXISTS tracks (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL,
-  length INTEGER NOT NULL,
-  num_corners INTEGER NOT NULL,
-  surface TEXT NOT NULL CHECK(surface IN ('Asphalt', 'Gravel', 'Snow', 'Sand'))
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    length INTEGER NOT NULL,
+    num_corners INTEGER NOT NULL,
+    surface TEXT NOT NULL CHECK(surface IN ('Asphalt', 'Gravel', 'Dirt', 'Sand'))
   );
 
   CREATE TABLE IF NOT EXISTS users (
@@ -51,8 +55,10 @@ await db.exec(`
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     nickname TEXT UNIQUE NOT NULL,
-    cash_balance INTEGER NOT NULL DEFAULT 10000
-  );
+    cash_balance INTEGER NOT NULL DEFAULT 10000,
+    room_id INTEGER,
+    FOREIGN KEY (room_id) REFERENCES rooms(id)
+);
 
 
   CREATE TABLE IF NOT EXISTS user_cars (
@@ -63,6 +69,31 @@ await db.exec(`
     favorite      BOOLEAN NOT NULL DEFAULT 0,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (car_model_id) REFERENCES car_models(id)
+  );
+
+  CREATE TABLE IF NOT EXISTS rooms (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    is_full BOOLEAN NOT NULL DEFAULT 0
+  );
+
+  CREATE TABLE IF NOT EXISTS room_tracks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    room_id INTEGER NOT NULL,
+    track_id INTEGER NOT NULL,
+    slot INTEGER NOT NULL CHECK(slot BETWEEN 1 AND 5),
+    FOREIGN KEY (room_id) REFERENCES rooms(id),
+    FOREIGN KEY (track_id) REFERENCES tracks(id),
+    UNIQUE(room_id, slot)
+  );
+
+  CREATE TABLE IF NOT EXISTS room_user_cars (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    room_id INTEGER NOT NULL,
+    slot INTEGER NOT NULL CHECK(slot BETWEEN 1 AND 5),
+    user_car_id INTEGER NOT NULL,
+    FOREIGN KEY (room_id) REFERENCES rooms(id),
+    FOREIGN KEY (user_car_id) REFERENCES user_cars(id),
+    UNIQUE(room_id, slot)
   );
 `);
 
@@ -313,7 +344,6 @@ if (deleteMode) {
     ('Zimbabwe', 'ZW');
   `);
 
-
   await db.run(`
   INSERT INTO car_brands (name, country_code) VALUES
     ('Acura', 'JP'),
@@ -374,7 +404,7 @@ if (deleteMode) {
     ('Volkswagen', 'DE'),
     ('Volvo', 'SE');
   `);
-  
+
   await db.run(`
   INSERT INTO car_models (name, top_speed, "accel_0_to_100", handling, drivetrain, tyres, car_brand_id) VALUES 
     ('Skyline GTS-t Type M (R32)', 238, 610, 79, 'RWD', 'Performance', 41),
@@ -510,5 +540,5 @@ if (deleteMode) {
     ('Interlagos', 4309, 15, 'Asphalt'),
     ('Suzuka Circuit', 5807, 18, 'Asphalt'),
     ('Austin GP Circuit', 5513, 20, 'Asphalt');
-  `)
+  `);
 }

@@ -1,6 +1,14 @@
 import db from "../connection.js";
 import { encrypt, compare } from "../../utils/hashing.js";
 
+export async function getUserById(id) {
+  const result = await db.get("SELECT * FROM users WHERE id = ?", [
+    id,
+  ]);
+
+  return result;
+}
+
 export async function emailExists(email) {
   const result = await db.get("SELECT email FROM users WHERE email = ?", [
     email,
@@ -48,6 +56,12 @@ export async function getUserIdByEmail(email) {
   return id;
 }
 
+export async function getUsersIdByRoomId(roomId) {
+  const results = await db.all("SELECT * FROM users WHERE room_id = ?", [roomId]);
+
+  return results;
+}
+
 export async function getCashBalanceByEmail(email) {
   const { cash_balance } = await db.get(
     "SELECT cash_balance FROM users WHERE email = ?",
@@ -63,8 +77,29 @@ export async function updateCashBalanceByEmail(email, newBalance) {
     [newBalance, email]
   );
   
-  return !!result;
+  return result.changes > 0;
+
 }
+
+export async function updateRoomIdByUserId(userId, roomId) {
+  const result = await db.run(
+    "UPDATE users SET room_id = ? WHERE id = ?",
+    [roomId, userId]
+  );
+  
+  return result.changes > 0;
+
+}
+
+export async function removeRoomIdFromUser(userId) {
+  const result = await db.run(
+    "UPDATE users SET room_id = NULL WHERE id = ?",
+    [userId]
+  );
+
+  return result.changes > 0;
+}
+
 
 export async function addToCashBalanceByEmail(email, amount) {
   const oldBalance = await getCashBalanceByEmail(email);

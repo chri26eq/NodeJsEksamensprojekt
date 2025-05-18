@@ -100,7 +100,6 @@ export async function removeUserCar(userId, userCarId) {
 
 export async function getNewestUserCarsByUserId(userId, nrOfCars) {
   
-  // Hent de nyeste biler for brugeren
   const result = await db.all(
     `
     SELECT 
