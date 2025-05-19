@@ -5,6 +5,11 @@ export async function addRoom() {
   return result.lastID;
 }
 
+export async function getRoomById(roomId) {
+  const room = await db.get("SELECT * FROM rooms WHERE id = ?", [roomId]);
+  return room;
+}
+
 export async function getRoom() {
   const room = await db.get("SELECT * FROM rooms WHERE is_full = 0 LIMIT 1");
   return room;
