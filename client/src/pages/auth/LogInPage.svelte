@@ -5,9 +5,9 @@
   import { Button } from "flowbite-svelte";
   const {} = $props();
 
-  let email = $state("aa@aa.dk");
+  let email = $state("");
 
-  let password = $state("!QAZ2wsx");
+  let password = $state("");
 
   async function handleLogin() {
     const result = await login(email, password);

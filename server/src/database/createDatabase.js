@@ -3,8 +3,6 @@ import db from "./connection.js";
 const deleteMode = process.argv.includes("--delete");
 
 if (deleteMode) {
-  await db.run("DROP TABLE IF EXISTS room_user_cars;");
-  await db.run("DROP TABLE IF EXISTS room_tracks;");
   await db.run("DROP TABLE IF EXISTS rooms;");
   
   await db.run("DROP TABLE IF EXISTS user_cars;");
@@ -76,25 +74,9 @@ await db.exec(`
     is_full BOOLEAN NOT NULL DEFAULT 0
   );
 
-  CREATE TABLE IF NOT EXISTS room_tracks (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    room_id INTEGER NOT NULL,
-    track_id INTEGER NOT NULL,
-    slot INTEGER NOT NULL CHECK(slot BETWEEN 1 AND 5),
-    FOREIGN KEY (room_id) REFERENCES rooms(id),
-    FOREIGN KEY (track_id) REFERENCES tracks(id),
-    UNIQUE(room_id, slot)
-  );
+  
 
-  CREATE TABLE IF NOT EXISTS room_user_cars (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    room_id INTEGER NOT NULL,
-    slot INTEGER NOT NULL CHECK(slot BETWEEN 1 AND 5),
-    user_car_id INTEGER NOT NULL,
-    FOREIGN KEY (room_id) REFERENCES rooms(id),
-    FOREIGN KEY (user_car_id) REFERENCES user_cars(id),
-    UNIQUE(room_id, slot)
-  );
+  
 `);
 
 if (deleteMode) {
@@ -505,7 +487,59 @@ if (deleteMode) {
     ('Model 3 Performance', 261, 330, 91, '4X4', 'Slicks', 54),
     ('Yaris GR', 230, 540, 84, '4X4', 'Performance', 55),
     ('Arteon R', 270, 430, 80, '4X4', 'Performance', 56),
-    ('S60 Polestar Engineered', 250, 400, 85, '4X4', 'Performance', 57);
+    ('S60 Polestar Engineered', 250, 400, 85, '4X4', 'Performance', 57),
+    ('Yaris (XP130)', 165, 1200, 60, 'FWD', 'Standard', 55),
+    ('Corsa E', 161, 1150, 62, 'FWD', 'Standard', 42),
+    ('Panda', 150, 1400, 55, 'FWD', 'Standard', 18),
+    ('Twingo', 145, 1500, 53, 'FWD', 'Standard', 46),
+    ('Fiesta Mk7', 160, 1100, 65, 'FWD', 'Standard', 19),
+    ('Accent', 155, 1250, 58, 'FWD', 'Standard', 24),
+    ('Rio', 158, 1300, 59, 'FWD', 'Standard', 29),
+    ('Civic (EG6)', 170, 1000, 68, 'FWD', 'Standard', 23),
+    ('Corolla E120', 170, 1150, 60, 'FWD', 'Standard', 55),
+    ('Golf Mk4', 175, 1000, 63, 'FWD', 'Standard', 56),
+    ('Megane Mk2', 170, 1200, 57, 'FWD', 'Standard', 46),
+    ('206', 170, 1250, 56, 'FWD', 'Standard', 43),
+    ('Fabia', 165, 1300, 55, 'FWD', 'Standard', 50),
+    ('Punto', 168, 1220, 54, 'FWD', 'Standard', 18),
+    ('Ka', 146, 1550, 50, 'FWD', 'Standard', 19),
+    ('Micra (K12)', 155, 1350, 52, 'FWD', 'Standard', 41),
+    ('Up! GTI', 196, 900, 65, 'FWD', 'Standard', 56),
+    ('i10', 155, 1400, 53, 'FWD', 'Standard', 24),
+    ('Twingo II', 150, 1480, 52, 'FWD', 'Standard', 46),
+    ('Forfour', 155, 1450, 51, 'FWD', 'Standard', 51),
+    ('Yaris Verso', 160, 1600, 50, 'FWD', 'Standard', 55),
+    ('Picanto', 155, 1500, 52, 'FWD', 'Standard', 29),
+    ('Spark', 150, 1550, 51, 'FWD', 'Standard', 10),
+    ('Matiz', 145, 1600, 50, 'FWD', 'Standard', 14),
+    ('Celerio', 150, 1550, 50, 'FWD', 'Standard', 53),
+    ('Sandero', 155, 1500, 53, 'FWD', 'Standard', 13),
+    ('Duster', 180, 1400, 56, '4X4', 'All-terrain', 13),
+    ('Captur', 170, 1450, 54, 'FWD', 'Standard', 46),
+    ('Kona', 160, 1500, 55, 'FWD', 'Standard', 24),
+    ('Soul', 165, 1500, 54, 'FWD', 'Standard', 29),
+    ('Polo Mk5', 170, 1350, 60, 'FWD', 'Standard', 56),
+    ('Clio Campus', 160, 1400, 52, 'FWD', 'Standard', 46),
+    ('Corsa D', 165, 1300, 55, 'FWD', 'Standard', 42),
+    ('Swift (ZC31S)', 165, 1400, 53, 'FWD', 'Standard', 53),
+    ('Yeti', 175, 1400, 55, '4X4', 'All-terrain', 50),
+    ('Tiguan', 185, 1300, 58, '4X4', 'All-terrain', 56),
+    ('X1', 190, 1250, 60, '4X4', 'Standard', 6),
+    ('Qashqai', 185, 1350, 55, 'FWD', 'All-terrain', 41),
+    ('CR-V', 185, 1400, 58, '4X4', 'All-terrain', 23),
+    ('Rav4', 180, 1450, 56, '4X4', 'All-terrain', 55),
+    ('Forester', 180, 1400, 57, '4X4', 'All-terrain', 52),
+    ('Outback', 175, 1500, 56, '4X4', 'All-terrain', 52),
+    ('Escalade', 180, 1500, 55, '4X4', 'All-terrain', 9),
+    ('Sequoia', 175, 1500, 53, '4X4', 'All-terrain', 55),
+    ('Cherokee', 180, 1450, 55, '4X4', 'All-terrain', 28),
+    ('Pathfinder', 180, 1400, 56, '4X4', 'All-terrain', 41),
+    ('Pajero', 175, 1500, 54, '4X4', 'All-terrain', 40),
+    ('Compass', 175, 1500, 55, '4X4', 'All-terrain', 28),
+    ('Vitara', 170, 1500, 53, '4X4', 'All-terrain', 53),
+    ('Freelander', 170, 1500, 54, '4X4', 'All-terrain', 50);
+
+
   `);
 
   await db.run(`
@@ -541,4 +575,14 @@ if (deleteMode) {
     ('Suzuka Circuit', 5807, 18, 'Asphalt'),
     ('Austin GP Circuit', 5513, 20, 'Asphalt');
   `);
+
+
+  await db.run(`
+    INSERT INTO users (email, password, nickname) VALUES 
+    ('1', '$2a$14$r5x7IwMVOKn5CtcBm3.NsuqQQbJW9.VH.PXfP7BpLxgQQxJBSM/fO', 'user1'),
+    ('2', '$2a$14$fRo/HOhOvPr6eEB0RNCTW.gmeALY7Xd6tqReGZuSror0YLRhvJz0G', 'user2'),
+    ('3', '$2a$14$Ud6m36ireNWjI4CkkDvbre5dioWchRGlItEnLwsVakRlY59ud3jS.', 'user3'),
+    ('4', '$2a$14$d61yXeN55pifZwuQUjIeN.mhbKRlkImjpiEwHL.xoiDGcIOn6ZzfG', 'user4');
+      
+    `);
 }

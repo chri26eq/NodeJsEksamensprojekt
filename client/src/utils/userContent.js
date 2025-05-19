@@ -1,9 +1,9 @@
 import { fetchGet, fetchPost } from "../utils/fetch.js";
-import { getBaseUrl } from "../stores/urlStore.js";
+import { getBaseServerUrl } from "../stores/urlStore.js";
 import { user, isLoggedIn } from "../stores/userStore.js";
 import toast from "svelte-french-toast";
 
-const URL = getBaseUrl();
+const URL = getBaseServerUrl();
 
 export async function getCashBalance() {
   try {

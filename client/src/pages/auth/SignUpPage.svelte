@@ -12,10 +12,10 @@
   import { signUp } from "../../utils/auth";
   const {} = $props();
 
-  let email = $state("aa@aa.dk");
-  let nickname = $state("aa");
-  let password = $state("!QAZ2wsx");
-  let passwordConfirm = $state("!QAZ2wsx");
+  let email = $state("");
+  let nickname = $state("");
+  let password = $state("");
+  let passwordConfirm = $state("");
 
 
   async function handleSignUp() {

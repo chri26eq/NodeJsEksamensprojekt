@@ -20,17 +20,3 @@ export async function getTracksByIds(trackIds) {
   return tracks;
 }
 
-export async function getTracksByRoomId(roomId) {
-  const query = `
-    SELECT tracks.*
-    FROM tracks
-    JOIN room_tracks ON tracks.id = room_tracks.track_id
-    WHERE room_tracks.room_id = ?
-    ORDER BY room_tracks.slot
-
-  `;
-
-  const tracks = await db.all(query, [roomId]);
-
-  return tracks;
-}

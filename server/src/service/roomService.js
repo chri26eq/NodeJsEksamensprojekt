@@ -1,73 +1,45 @@
 import {
   addRoom,
   deleteRoom,
-  getRoom,
-  getRoomById,
+  getRoomNotFull,
   setRoomIsFullTrue,
-} from "../database/repos/rooms/roomsRepo.js";
+} from "../database/repos/roomsRepo.js";
+
+
 import {
-  addRoomTracks,
-  deleteRoomTracksByRoomId,
-} from "../database/repos/rooms/roomTracksRepo.js";
-import { deleteRoomUserCarsByRoomId } from "../database/repos/rooms/roomUserCarsRepo.js";
-import { getTracksByRoomId } from "../database/repos/tracksRepo.js";
-import {
-  getUserById,
+  getRoomIdByUserId,
   getUsersIdByRoomId,
   removeRoomIdFromUser,
   updateRoomIdByUserId,
 } from "../database/repos/usersRepo.js";
-import  {getUserCarsByRoomId } from "../database/repos/userCarsRepo.js";
-export async function findAvailableRoom(userId) {
-  let room = await getRoom();
 
+
+export async function findAvailableRoom(userId) {
+  let room = await getRoomIdByUserId(userId);
+  if (room) {
+    console.log(userId, "already in room", room)
+
+    return room
+  }
+
+  room = await getRoomNotFull();
   if (room) {
     await setRoomIsFullTrue(room.id);
     await updateRoomIdByUserId(userId, room.id);
+    console.log(userId, "entered room", room.id, "Now 2 in room", )
   } else {
     await addRoom();
-    room = await getRoom();
+    room = await getRoomNotFull();
     await updateRoomIdByUserId(userId, room.id);
-    await addRoomTracks(room.id);
+    console.log(userId, "entered room", room.id, "Now 1 in room", )
+
   }
+  return room.id
 }
 
-export async function closeRoom(roomId) {
-  await deleteRoomTracksByRoomId(roomId);
-  await deleteRoomUserCarsByRoomId(roomId);
+export async function leaveRoom(roomId) {
+  
   await deleteRoom(roomId);
   const users = await getUsersIdByRoomId(roomId);
   users.forEach((user) => removeRoomIdFromUser(user.id));
 }
-
-export async function getRoomCascading(roomId) {
-  const room = await getRoomById(roomId);
-  if (!room) return null;
-
-  const userIds = await getUsersIdByRoomId()
-  
-  const tracks = await getTracksByRoomId(roomId)
-
-
-  const userCars = await getUserCarsByRoomId(); // disse skal mappes.
-}
-
-
-
-
-
-
-
-async function run() {
-  // const userId = 1;
-  // let user = await getUserById(userId);
-  // console.log(user);
-
-  // await findAvailableRoom(userId);
-  // user = await getUserById(userId);
-  // console.log(user);
-  await closeRoom(7);
-  // user = await getUserById(userId);
-  // console.log(user);
-}
-run();

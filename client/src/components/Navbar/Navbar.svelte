@@ -8,6 +8,10 @@
 
   const { url = "" } = $props();
   let showMenu = $state(false);
+
+  function toggleMenu() {
+    showMenu = !showMenu
+  }
 </script>
 
 <div class="fixed top-0 left-0 w-full z-50 bg-blue-300/70 md:bg-blue-300">
@@ -17,7 +21,7 @@
         <div class="md:hidden flex justify-between">
           <div class="p-4">
             <button
-              onclick={() => (showMenu = !showMenu)}
+              onclick={toggleMenu}
               class="text-white bg-blue-700 px-4 py-2 rounded"
             >
               {#if showMenu}
@@ -40,21 +44,21 @@
           <Link to="/" let:active><NavbarItem text="Home" {active} /></Link>
 
           {#if $isLoggedIn}
-            <Link to="/yourcards" let:active
+            <Link to="/yourcards" let:active onclick={toggleMenu}
               ><NavbarItem text="Your Cards" {active} /></Link
             >
-            <Link to="/buycards" let:active
+            <Link to="/buycards" let:active onclick={toggleMenu}
               ><NavbarItem text="Buy Cards" {active} /></Link
             >
-            <Link to="/match" let:active
+            <Link to="/match" let:active onclick={toggleMenu}
               ><NavbarItem text="Find Match" {active} /></Link
             >
-            <NavbarItem text="Logout" onClick={logout} />
+            <NavbarItem text="Logout" onclick={() => { logout(); toggleMenu(); }} />
           {:else}
-            <Link to="/login" let:active
+            <Link to="/login" let:active onclick={toggleMenu}
               ><NavbarItem text="Login" {active} /></Link
             >
-            <Link to="/signup" let:active
+            <Link to="/signup" let:active onclick={toggleMenu}
               ><NavbarItem text="Sign Up" {active} /></Link
             >
           {/if}

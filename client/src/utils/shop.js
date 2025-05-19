@@ -1,7 +1,7 @@
 import { fetchDelete, fetchPost } from "../utils/fetch.js";
-import { getBaseUrl } from "../stores/urlStore.js";
+import { getBaseServerUrl } from "../stores/urlStore.js";
 
-const URL = getBaseUrl();
+const URL = getBaseServerUrl();
 
 export async function buyCarPack(packPrice, packSize) {
   try {

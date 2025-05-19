@@ -1,5 +1,5 @@
 <script>
-  const { active = false, text, onClick = undefined } = $props();
+  const { active = false, text, onclick = undefined } = $props();
 
   function itemClass() {
     let classString = "text-left py-2 rounded px-4";
@@ -10,8 +10,8 @@
   }
 </script>
 
-{#if onClick}
-  <button onclick={onClick} class={itemClass()}>{text}</button>
+{#if onclick}
+  <button onclick={onclick} class={itemClass()}>{text}</button>
 {:else}
   <div class={itemClass()}>{text}</div>
 {/if}

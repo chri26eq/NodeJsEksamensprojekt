@@ -1,4 +1,4 @@
-import db from "../../connection.js";
+import db from "../connection.js"
 
 export async function addRoom() {
   const result = await db.run("INSERT INTO rooms DEFAULT VALUES");
@@ -10,7 +10,7 @@ export async function getRoomById(roomId) {
   return room;
 }
 
-export async function getRoom() {
+export async function getRoomNotFull() {
   const room = await db.get("SELECT * FROM rooms WHERE is_full = 0 LIMIT 1");
   return room;
 }

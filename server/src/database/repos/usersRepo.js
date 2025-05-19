@@ -41,6 +41,14 @@ export async function addUser(email, password, nickname) {
   );
 }
 
+export async function getRoomIdByUserId(userId) {
+  const { room_id } = await db.get("SELECT room_id FROM users WHERE id = ?", [
+    userId,
+  ]);
+
+  return room_id;
+}
+
 export async function getNicknameByEmail(email) {
   const { nickname } = await db.get(
     "SELECT nickname FROM users WHERE email = ?",
@@ -110,3 +118,4 @@ export async function addToCashBalanceByEmail(email, amount) {
   if (!result) throw new Error("DB error"); 
   return true;
 }
+

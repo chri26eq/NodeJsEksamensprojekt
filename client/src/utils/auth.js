@@ -1,10 +1,10 @@
 import { fetchGet, fetchPost } from "../utils/fetch.js";
-import { getBaseUrl } from "../stores/urlStore.js";
+import { getBaseServerUrl } from "../stores/urlStore.js";
 import { user, isLoggedIn, updateUserContentFromServer } from "../stores/userStore.js";
 import toast from "svelte-french-toast";
 import { navigate } from "svelte-routing";
 
-const URL = getBaseUrl();
+const URL = getBaseServerUrl();
 
 export async function checkSession() {
   try {

@@ -132,28 +132,4 @@ export async function getNewestUserCarsByUserId(userId, nrOfCars) {
 }
 
 
-export async function getUserCarsByRoomId(roomId) {
-  const query = `
-    SELECT
-      user_cars.id AS user_car_id,
-      user_cars.user_id,
-      user_cars.car_model_id,
-      user_cars.upgraded,
-      user_cars.favorite,
-      car_models.name AS car_model_name,
-      car_models.top_speed,
-      car_models.accel_0_to_100,
-      car_models.handling,
-      car_models.drivetrain,
-      car_models.tyres,
-      room_user_cars.slot
-    FROM room_user_cars
-    JOIN user_cars ON room_user_cars.user_car_id = user_cars.id
-    JOIN car_models ON user_cars.car_model_id = car_models.id
-    WHERE room_user_cars.room_id = ?
-    ORDER BY room_user_cars.slot
-  `;
 
-  const userCars = await db.all(query, [roomId]);
-  return userCars;
-}
