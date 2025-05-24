@@ -1,9 +1,9 @@
 <script>
   import { HeartOutline, HeartSolid } from "flowbite-svelte-icons";
-  import { updateUserCarsIsFavorite } from "../../utils/userContent";
+  import { updateUserCarsIsFavorite } from "../../utils/content";
   import toast from "svelte-french-toast";
 
-  const { car } = $props();
+  const { car, class: className = "" } = $props();
 
   let isFavorite = $derived(car.favorite);
 
@@ -19,12 +19,12 @@
   }
 </script>
 
-<div>
+
   <button onclick={handleButtonClick}>
     {#if isFavorite}
-      <HeartSolid color="red" />
+      <HeartSolid color="red" class={className}/>
     {:else}
-      <HeartOutline color="red" />
+      <HeartOutline color="red" class={className}/>
     {/if}
   </button>
-</div>
+

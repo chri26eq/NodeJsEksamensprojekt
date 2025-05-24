@@ -2,14 +2,13 @@
   import {
     CheckPlusCircleOutline,
     CirclePlusOutline,
-    CashOutline,
   } from "flowbite-svelte-icons";
   import { updateUserContentFromServer } from "../../stores/userStore";
   import { upgradeCar } from "../../utils/shop";
   import toast from "svelte-french-toast";
   import BuySellModal from "../BuySellModal.svelte";
 
-  let { car } = $props();
+  let { car, class: className = "" } = $props();
   
   let isUpgraded = $derived(car.upgraded);
   let showModal = $state(false);
@@ -48,14 +47,14 @@
   }
 </script>
 
-<div>
+
   {#if isUpgraded}
     <div>
-      <CheckPlusCircleOutline />
+      <CheckPlusCircleOutline class={"text-green-500 " + className} />
     </div>
   {:else}
     <button onclick={openUpgradeModal}>
-      <CirclePlusOutline />
+      <CirclePlusOutline class={"hover:text-blue-500 " + className} />
     </button>
   {/if}
 
@@ -73,4 +72,4 @@
       />
     
   {/if}
-</div>
+

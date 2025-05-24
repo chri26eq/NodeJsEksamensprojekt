@@ -1,11 +1,10 @@
 import db from "../connection.js";
 
-export async function getRandomTracks(nrOfTracks) {
-  const tracks = await db.all(
-    "SELECT * FROM tracks ORDER BY RANDOM() LIMIT ?",
-    [nrOfTracks]
-  );
-  return tracks;
+export async function getRandomTrackIds(nrOfTracks) {
+  const rows = await db.all("SELECT id FROM tracks ORDER BY RANDOM() LIMIT ?", [
+    nrOfTracks,
+  ]);
+  return rows.map((row) => row.id);
 }
 
 export async function getTracksByIds(trackIds) {
@@ -20,3 +19,7 @@ export async function getTracksByIds(trackIds) {
   return tracks;
 }
 
+export async function getTracksById(trackId) {
+  const track = await db.get("SELECT * FROM tracks WHERE id = ?", [trackId]);
+  return track;
+}

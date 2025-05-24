@@ -9,7 +9,7 @@
   const { packName, packPrice, packSize } = $props();
 
   const modalTitle = `Buy ${packName}?`;
-  const modalMessage = `Do you want to pay ${packPrice} CarCash to buy the ${packName} containing ${packSize} cars?`;
+  const modalMessage = `Do you want to pay ${packPrice} CarCash to buy the ${packName} containing ${packSize} CarCards?`;
 
   let showConfirmModal = $state(false);
   let showResultModal = $state(false);

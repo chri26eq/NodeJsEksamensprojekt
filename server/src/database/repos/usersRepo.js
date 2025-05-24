@@ -41,13 +41,7 @@ export async function addUser(email, password, nickname) {
   );
 }
 
-export async function getRoomIdByUserId(userId) {
-  const { room_id } = await db.get("SELECT room_id FROM users WHERE id = ?", [
-    userId,
-  ]);
 
-  return room_id;
-}
 
 export async function getNicknameByEmail(email) {
   const { nickname } = await db.get(
@@ -64,11 +58,7 @@ export async function getUserIdByEmail(email) {
   return id;
 }
 
-export async function getUsersIdByRoomId(roomId) {
-  const results = await db.all("SELECT * FROM users WHERE room_id = ?", [roomId]);
 
-  return results;
-}
 
 export async function getCashBalanceByEmail(email) {
   const { cash_balance } = await db.get(
@@ -89,24 +79,9 @@ export async function updateCashBalanceByEmail(email, newBalance) {
 
 }
 
-export async function updateRoomIdByUserId(userId, roomId) {
-  const result = await db.run(
-    "UPDATE users SET room_id = ? WHERE id = ?",
-    [roomId, userId]
-  );
-  
-  return result.changes > 0;
 
-}
 
-export async function removeRoomIdFromUser(userId) {
-  const result = await db.run(
-    "UPDATE users SET room_id = NULL WHERE id = ?",
-    [userId]
-  );
 
-  return result.changes > 0;
-}
 
 
 export async function addToCashBalanceByEmail(email, amount) {

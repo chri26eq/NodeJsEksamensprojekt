@@ -2,9 +2,7 @@ import db from "./connection.js";
 
 const deleteMode = process.argv.includes("--delete");
 
-if (deleteMode) {
-  await db.run("DROP TABLE IF EXISTS rooms;");
-  
+if (deleteMode) {  
   await db.run("DROP TABLE IF EXISTS user_cars;");
   await db.run("DROP TABLE IF EXISTS users;");
   await db.run("DROP TABLE IF EXISTS tracks;");
@@ -17,7 +15,7 @@ await db.exec(`
   CREATE TABLE IF NOT EXISTS countries (
     name TEXT NOT NULL,
     code TEXT PRIMARY KEY UNIQUE NOT NULL
-    );
+  );
 
 
   CREATE TABLE IF NOT EXISTS car_brands (
@@ -53,10 +51,8 @@ await db.exec(`
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     nickname TEXT UNIQUE NOT NULL,
-    cash_balance INTEGER NOT NULL DEFAULT 10000,
-    room_id INTEGER,
-    FOREIGN KEY (room_id) REFERENCES rooms(id)
-);
+    cash_balance INTEGER NOT NULL DEFAULT 10000
+  );
 
 
   CREATE TABLE IF NOT EXISTS user_cars (
@@ -69,10 +65,7 @@ await db.exec(`
     FOREIGN KEY (car_model_id) REFERENCES car_models(id)
   );
 
-  CREATE TABLE IF NOT EXISTS rooms (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    is_full BOOLEAN NOT NULL DEFAULT 0
-  );
+  
 
   
 

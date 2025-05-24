@@ -7,7 +7,7 @@
   import toast from "svelte-french-toast";
   import BuySellModal from "../BuySellModal.svelte";
 
-  let { car } = $props();
+  let { car, class: className = "" } = $props();
   let showModal = $state(false);
 
   let carBrand = $derived(car.brand_name);
@@ -42,9 +42,9 @@ let carValue = $derived(car.value);
   }
 </script>
 
-<div>
+
   <button onclick={openSellModal}>
-    <CashOutline />
+    <CashOutline class={"hover:text-red-500 " + className} />
   </button>
 
   {#if showModal}
@@ -57,4 +57,4 @@ let carValue = $derived(car.value);
       sell
     />
   {/if}
-</div>
+

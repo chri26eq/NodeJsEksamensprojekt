@@ -6,6 +6,7 @@ import {
   userCredentialsMatches,
   addUser,
   getNicknameByEmail,
+  getUserIdByEmail,
 } from "../database/repos/usersRepo.js";
 
 import { sendMail } from "../utils/mailer/mailer.js";
@@ -41,9 +42,11 @@ router.post("/auth/login", async (req, res) => {
     const matches = await userCredentialsMatches(email, password);
     if (matches) {
       const nickname = await getNicknameByEmail(email);
+      const id = await getUserIdByEmail(email);
       req.session.user = {
         email: email,
-        nickname: nickname
+        nickname: nickname,
+        id: id
       };
       res.send({
         message: "Login successful",

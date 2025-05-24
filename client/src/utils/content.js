@@ -1,4 +1,4 @@
-import { fetchGet, fetchPost } from "../utils/fetch.js";
+import { fetchGet, fetchPost } from "./fetch.js";
 import { getBaseServerUrl } from "../stores/urlStore.js";
 import { user, isLoggedIn } from "../stores/userStore.js";
 import toast from "svelte-french-toast";
@@ -45,5 +45,18 @@ export async function updateUserCarsIsFavorite(userCarId, isFavorite) {
     return result.message;
   } catch (error) {
     throw new Error("Error fetching usercars", error);
+  }
+}
+
+export async function getTrackById(trackId) {
+  try {
+    const response = await fetchGet(URL + `/content/tracks/${trackId}`);
+    if (!response.ok) {
+      throw new Error("Bad response from server");
+    }
+    const result = await response.json();
+    return result.data;
+  } catch (error) {
+    throw new Error("Error fetching cash balance", error);
   }
 }

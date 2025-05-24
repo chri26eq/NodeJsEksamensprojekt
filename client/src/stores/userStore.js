@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import { getCashBalance, getUserCars } from "../utils/userContent";
+import { getCashBalance, getUserCars } from "../utils/content";
 
 
 
