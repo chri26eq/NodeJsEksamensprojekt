@@ -1,4 +1,4 @@
-# Multiplayer Game App
+# CarCards - A Multiplayer Game App
 
 ## Prerequisites
 
