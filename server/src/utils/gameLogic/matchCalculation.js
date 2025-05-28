@@ -18,6 +18,11 @@ export function calculateWinner(cars, track) {
         actualHandling -= 10;
         actualAccel *= 1.2;
       }
+
+
+      if (car.drivetrain === "RWD") actualHandling += 2;
+      if (car.drivetrain === "FWD") actualHandling -= 1;
+      if (car.drivetrain === "4X4") actualHandling += 1;
     }
 
     if (track.surface === "Gravel") {
@@ -32,6 +37,11 @@ export function calculateWinner(cars, track) {
       if (car.tyres === "All-terrain") actualHandling += 5;
       if (car.tyres === "Offroad") actualHandling += 10;
       if (car.tyres === "Standard") actualAccel *= 1.05;
+
+
+      if (car.drivetrain === "4X4") actualHandling += 5;
+      if (car.drivetrain === "FWD") actualHandling -= 2;
+      if (car.drivetrain === "RWD") actualHandling -= 4;
     }
 
     if (track.surface === "Dirt") {
@@ -49,6 +59,11 @@ export function calculateWinner(cars, track) {
       }
       if (car.tyres === "All-terrain") actualHandling += 5;
       if (car.tyres === "Offroad") actualHandling += 10;
+
+      // Drivetrain på jord
+      if (car.drivetrain === "4X4") actualHandling += 5;
+      if (car.drivetrain === "RWD") actualHandling -= 3;
+      if (car.drivetrain === "FWD") actualHandling -= 6;
     }
 
     if (track.surface === "Sand") {
@@ -65,6 +80,14 @@ export function calculateWinner(cars, track) {
         actualAccel *= 1.5;
       }
       if (car.tyres === "Offroad") actualHandling += 5;
+
+      // Drivetrain på sand
+      if (car.drivetrain === "4X4") actualHandling += 5;
+      if (car.drivetrain === "FWD") actualHandling -= 4;
+      if (car.drivetrain === "RWD") {
+        actualHandling -= 6;
+        actualAccel *= 1.1;
+      }
     }
 
     // Beregn performance score
@@ -76,7 +99,7 @@ export function calculateWinner(cars, track) {
 
     // Sammenlign med bedste score
     if (totalScore === bestScore) {
-      return undefined
+      return undefined; // tie
     } else if (totalScore > bestScore) {
       bestScore = totalScore;
       bestCar = car;
