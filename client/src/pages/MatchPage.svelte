@@ -7,7 +7,7 @@
   import CardSlot from "../components/Match/CardSlot.svelte";
   import { Button, Modal } from "flowbite-svelte";
   import Track from "../components/Track/Track.svelte";
-  import CarList from "../components/CarList.svelte";
+  import CarList from "../components/CarList/CarList.svelte";
   import CardPlaceHolder from "../components/Match/CardPlaceHolder.svelte";
 
   let socket = io(getBaseServerUrl(), {

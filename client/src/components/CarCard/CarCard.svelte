@@ -3,7 +3,7 @@
   import FavoriteButton from "./FavoriteButton.svelte";
   import SellCarButton from "./SellCarButton.svelte";
   import UpgradeButton from "./UpgradeButton.svelte";
-  import * as category from "../../utils/carCategory";
+  import * as category from "../CarList/filters/pp";
 
   const { car, preview = false, size = "md", overlay = undefined } = $props();
 
