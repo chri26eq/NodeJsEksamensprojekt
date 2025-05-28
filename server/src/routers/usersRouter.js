@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
-  addToCashBalanceByEmail,
-  getCashBalanceByEmail,
+  addToCashBalanceByUserId,
+  getCashBalanceByUserId,
   getUserIdByEmail,
 } from "../database/repos/usersRepo.js";
 import {
@@ -28,7 +28,7 @@ router.all("/users/{*splat}", async (req, res, next) => {
 
 router.get("/users/cashbalance", async (req, res) => {
   try {
-    const cashBalance = await getCashBalanceByEmail(userEmail);
+    const cashBalance = await getCashBalanceByUserId(userId);
     res.send({ cashBalance: cashBalance });
   } catch (error) {
     console.error("Error during GET: /users/cashbalance:", error);
@@ -80,7 +80,7 @@ router.delete("/users/usercars", async (req, res) => {
     if (carWasDeleted) {
       
 
-      await addToCashBalanceByEmail(userEmail, car.value);
+      await addToCashBalanceByUserId(userId, car.value);
       return res.status(200).send({ message: "Car sold", carValue: car.value });
     } else {
       return res.status(400).send({ error: "Car could not be deleted" });

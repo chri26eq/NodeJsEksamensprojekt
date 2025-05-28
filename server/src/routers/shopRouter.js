@@ -1,9 +1,9 @@
 import { Router } from "express";
 import {
-  addToCashBalanceByEmail,
-  getCashBalanceByEmail,
+  addToCashBalanceByUserId,
+  getCashBalanceByUserId,
   getUserIdByEmail,
-  updateCashBalanceByEmail,
+  updateCashBalanceByUserId,
 } from "../database/repos/usersRepo.js";
 import {
   addCarsToUser,
@@ -14,7 +14,6 @@ import { generateCarPack } from "../utils/gameLogic/carPacks.js";
 
 const router = Router();
 
-
 let userEmail;
 let userId;
 let cashBalance;
@@ -23,7 +22,7 @@ router.all("/shop/{*splat}", async (req, res, next) => {
   if (req.session.user) {
     userEmail = req.session.user.email;
     userId = req.session.user.id;
-    cashBalance = await getCashBalanceByEmail(userEmail);
+    cashBalance = await getCashBalanceByUserId(userId);
     next();
   } else {
     res.status(401).send({ error: "Not logged in" });
@@ -34,10 +33,7 @@ router.post("/shop/buypack", async (req, res) => {
   const price = req.body.price;
   const packSize = req.body.packSize;
   try {
-    const sufficientFunds = await addToCashBalanceByEmail(
-      userEmail,
-      -price
-    );
+    const sufficientFunds = await addToCashBalanceByUserId(userId, -price);
     if (!sufficientFunds) {
       res.status(402).send({
         message: "Insufficient funds",
@@ -45,14 +41,14 @@ router.post("/shop/buypack", async (req, res) => {
       });
       return;
     }
-    
-    updateCashBalanceByEmail(userEmail, cashBalance - price);
+
+    updateCashBalanceByUserId(userId, cashBalance - price);
     const packCars = await generateCarPack(packSize);
     const carIds = packCars.map((car) => car.id);
 
     await addCarsToUser(userId, carIds);
-    const newCars = await getNewestUserCarsByUserId(userId, packSize)
-    
+    const newCars = await getNewestUserCarsByUserId(userId, packSize);
+
     res.send({
       message: "Pack bought",
       email: userEmail,
@@ -68,7 +64,7 @@ router.post("/shop/upgradecar", async (req, res) => {
   const userCarId = req.body.user_car_id;
 
   try {
-    const sufficientFunds = await addToCashBalanceByEmail(userEmail, -2000);
+    const sufficientFunds = await addToCashBalanceByUserId(userId, -2000);
     if (!sufficientFunds) {
       res.status(402).send({
         message: "Insufficient funds",

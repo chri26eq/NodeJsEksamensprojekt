@@ -42,6 +42,12 @@ export async function addUser(email, password, nickname) {
 }
 
 
+export async function getUserIdByEmail(email) {
+  const { id } = await db.get("SELECT id FROM users WHERE email = ?", [email]);
+
+  return id;
+}
+
 
 export async function getNicknameByUserId(userId) {
   const { nickname } = await db.get(
@@ -52,27 +58,21 @@ export async function getNicknameByUserId(userId) {
   return nickname;
 }
 
-export async function getUserIdByEmail(email) {
-  const { id } = await db.get("SELECT id FROM users WHERE email = ?", [email]);
 
-  return id;
-}
-
-
-
-export async function getCashBalanceByEmail(email) {
+export async function getCashBalanceByUserId(id) {
   const { cash_balance } = await db.get(
-    "SELECT cash_balance FROM users WHERE email = ?",
-    [email]
+    "SELECT cash_balance FROM users WHERE id = ?",
+    [id]
   );
 
   return cash_balance;
 }
 
-export async function updateCashBalanceByEmail(email, newBalance) {
+
+export async function updateCashBalanceByUserId(userId, newBalance) {
   const result = await db.run(
-    "UPDATE users SET cash_balance = ? WHERE email = ?",
-    [newBalance, email]
+    "UPDATE users SET cash_balance = ? WHERE id = ?",
+    [newBalance, userId]
   );
   
   return result.changes > 0;
@@ -80,16 +80,12 @@ export async function updateCashBalanceByEmail(email, newBalance) {
 }
 
 
-
-
-
-
-export async function addToCashBalanceByEmail(email, amount) {
-  const oldBalance = await getCashBalanceByEmail(email);
+export async function addToCashBalanceByUserId(userId, amount) {
+  const oldBalance = await getCashBalanceByUserId(userId);
   if (amount < 0 && Math.abs(amount) > oldBalance) {
     return false;
   }
-  const result = await updateCashBalanceByEmail(email, oldBalance + amount)
+  const result = await updateCashBalanceByUserId(userId, oldBalance + amount)
   if (!result) throw new Error("DB error"); 
   return true;
 }
