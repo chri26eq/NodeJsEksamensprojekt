@@ -572,10 +572,10 @@ if (deleteMode) {
 
   await db.run(`
     INSERT INTO users (email, password, nickname) VALUES 
-    ('1', '$2a$14$r5x7IwMVOKn5CtcBm3.NsuqQQbJW9.VH.PXfP7BpLxgQQxJBSM/fO', 'user1'),
-    ('2', '$2a$14$fRo/HOhOvPr6eEB0RNCTW.gmeALY7Xd6tqReGZuSror0YLRhvJz0G', 'user2'),
-    ('3', '$2a$14$Ud6m36ireNWjI4CkkDvbre5dioWchRGlItEnLwsVakRlY59ud3jS.', 'user3'),
-    ('4', '$2a$14$d61yXeN55pifZwuQUjIeN.mhbKRlkImjpiEwHL.xoiDGcIOn6ZzfG', 'user4');
+    ('1', '$2a$14$r5x7IwMVOKn5CtcBm3.NsuqQQbJW9.VH.PXfP7BpLxgQQxJBSM/fO', 'Christoffer'),
+    ('2', '$2a$14$fRo/HOhOvPr6eEB0RNCTW.gmeALY7Xd6tqReGZuSror0YLRhvJz0G', 'Anders'),
+    ('3', '$2a$14$Ud6m36ireNWjI4CkkDvbre5dioWchRGlItEnLwsVakRlY59ud3jS.', 'Lars'),
+    ('4', '$2a$14$d61yXeN55pifZwuQUjIeN.mhbKRlkImjpiEwHL.xoiDGcIOn6ZzfG', 'Chris');
       
     `);
 }
