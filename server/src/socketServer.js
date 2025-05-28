@@ -2,7 +2,7 @@ import { Server } from "socket.io";
 import { getUserCarById } from "./database/repos/userCarsRepo.js";
 import {
   getRandomTrackIds,
-  getTracksById,
+  getTrackById,
 } from "./database/repos/tracksRepo.js";
 import { calculateWinner } from "./utils/gameLogic/matchCalculation.js";
 
@@ -135,7 +135,7 @@ export function initSocket(server, sessionMiddleware) {
         // Løb igennem de 5 tracks
         for (let i = 0; i < room.trackIds.length; i++) {
           const trackId = room.trackIds[i];
-          const track = await getTracksById(trackId);
+          const track = await getTrackById(trackId);
 
           // Find de to spillere og deres valgte biler til denne bane
           const cars = room.players.map((player) => player.cars[trackId]);

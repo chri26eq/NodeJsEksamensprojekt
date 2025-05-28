@@ -19,7 +19,7 @@ export async function getTracksByIds(trackIds) {
   return tracks;
 }
 
-export async function getTracksById(trackId) {
+export async function getTrackById(trackId) {
   const track = await db.get("SELECT * FROM tracks WHERE id = ?", [trackId]);
   return track;
 }
