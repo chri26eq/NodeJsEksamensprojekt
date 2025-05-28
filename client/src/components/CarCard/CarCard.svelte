@@ -49,9 +49,9 @@
   };
 
   const overlayClasses = {
-    winner: " ring-4 ring-green-500 ",
-    loser: " ring-4 ring-red-500 ",
-    tied: " ring-4 ring-yellow-500 ",
+    winner: " ring-[0.5em] ring-green-500 ",
+    loser: " ring-[0.5em] ring-red-500 ",
+    tied: " ring-[0.5em] ring-yellow-500 ",
   }
 
   let cardColor = $derived(() => {
