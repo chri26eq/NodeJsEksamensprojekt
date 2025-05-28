@@ -23,7 +23,7 @@ router.post("/auth/signup", async (req, res) => {
       res.status(409).send({ error: "Nickname already exists" });
     } else {
       await addUser(email, password, nickname);
-      // sendMail(email, mailTemplate.welcomeSubject, mailTemplate.welcomeContent); // TODO REMOVE COMMENT
+      sendMail(email, mailTemplate.welcomeSubject, mailTemplate.welcomeContent);
       res.send({
         message: "Signup successful",
         email: email,

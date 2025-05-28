@@ -7,10 +7,10 @@
     "setupDatabase": "npm run setupDatabase --prefix server",
     "resetDatabase": "npm run resetDatabase --prefix server",
     "start": "concurrently \"npm run start --prefix server\" \"npm run dev --prefix client\"",
-    "dev": "concurrently \"npm run nodemon --prefix server\" \"npm run dev --prefix client\""
+    "dev": "concurrently \"npm run nodemon --prefix server\" \"npm run dev --prefix client\"",
+    "install-start": "npm run install-all && npm run resetDatabase && npm start"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
   }
-  
 }

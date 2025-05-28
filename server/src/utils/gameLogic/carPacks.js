@@ -20,7 +20,7 @@ export async function generateCarPack(size) {
   const pack = [];
   for (let i = 0; i < size; i++) {
     const intervalIndex = chooseIntervalIndex(intervals, buckets);
-    pack.push(removeRandomCarFromBucket(buckets[intervalIndex]));
+    pack.push(getRandomCarFromBucket(buckets[intervalIndex]));
   }
 
   return pack;
@@ -48,7 +48,7 @@ function chooseIntervalIndex(intervals, buckets) {
   return available[available.length - 1].index;
 }
 
-function removeRandomCarFromBucket(bucket) {
+function getRandomCarFromBucket(bucket) {
   const id = Math.floor(Math.random() * bucket.length);
-  return bucket.splice(id, 1)[0];
+  return bucket[id];
 }

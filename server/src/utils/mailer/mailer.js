@@ -11,6 +11,11 @@ const transporter = nodemailer.createTransport({
 });
 
 export function sendMail(receiver, mailSubject, mailContentHTML) {
+  if (!process.env.EMAIL_SERVICE) {
+    console.warn("E-mail service is not configured. Mail not sent.");
+    return;
+  }
+
   const mailOptions = {
     from: process.env.EMAIL_USERNAME,
     to: receiver,

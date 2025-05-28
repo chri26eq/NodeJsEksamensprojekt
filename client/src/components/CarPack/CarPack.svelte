@@ -1,10 +1,12 @@
 <script>
-  import { Button } from "flowbite-svelte";
+  import { Button, Modal } from "flowbite-svelte";
   import { buyCarPack } from "../../utils/shop";
   import toast from "svelte-french-toast";
   import BuySellModal from "../BuySellModal.svelte";
   import CarCard from "../CarCard/CarCard.svelte";
   import { updateUserContentFromServer } from "../../stores/userStore";
+  import CarList from "../CarList/CarList.svelte";
+  import { CashOutline } from "flowbite-svelte-icons";
 
   const { packName, packPrice, numberOfCards, size="md" } = $props();
 
@@ -43,11 +45,7 @@
 
   
 
-  function closeResultModal(event) {
-    event.stopPropagation();
-    showResultModal = false;
-    newCars = [];
-  }
+  
 </script>
 
 <button
@@ -58,15 +56,18 @@ class={
 }
 
 >
+<div class="flex-1 w-full flex bg-amber-200 justify-end" >
+  <p class="flex flex-row text-[1em] font-bold items-center gap-[0.1em] px-[0.5em]">{packPrice}<CashOutline class="size-[1em]" /></p>
+</div>
 <!-- Top: pack name -->
-<div class="flex-1 w-full flex items-center justify-center bg-amber-700/90 px-[0.2em] py-[0.2em]">
+<div class="flex-5 w-full flex items-center justify-center bg-amber-700/90 px-[0.2em] py-[0.2em]">
   <p class="text-white text-[1.2em] font-bold  rotate-[10deg]">
     {packName}
   </p>
 </div>
 
 <!-- Bottom: pack info -->
-<div class="flex-1 w-full flex items-center justify-center bg-amber-500/90 px-[0.2em] py-[0.2em]">
+<div class="flex-5 w-full flex items-center justify-center bg-amber-500/90 px-[0.2em] py-[0.2em]">
   <p class="text-white text-[1.1em] font-medium text-center ">
     {numberOfCards} random {numberOfCards == 1 ? "CarCard" : "CarCards"}
   </p>
@@ -84,21 +85,7 @@ class={
     onConfirm={confirmBuyPack}
   />
 
+  <Modal title="New {numberOfCards == 1 ? "CarCard" : "CarCards"}" bind:open={showResultModal} autoclose>
+    <CarList preview filterExcluded cars={newCars} />
 
-{#if showResultModal}
-  <div class="fixed inset-0 bg-black/30 flex justify-center items-center z-50">
-    <div class="bg-black/70 rounded-2xl shadow-lg p-6 max-w-4xl w-full">
-      <div class="my-2 flex justify-between align-middle">
-        <h2 class="text-white text-xl font-bold mb-4">You got:</h2>
-        <Button color="light" onclick={closeResultModal}>Close</Button>
-      </div>
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-h-[70vh] overflow-y-auto py-3"
-      >
-        {#each newCars as car}
-          <CarCard {car} preview />
-        {/each}
-      </div>
-    </div>
-  </div>
-{/if}
+  </Modal>

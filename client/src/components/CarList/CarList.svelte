@@ -6,7 +6,7 @@
   import * as drivetrain from "./filters/drivetrain.js";
   import { FilterOutline } from "flowbite-svelte-icons";
 
-  const { cars, preview = false, onclick = undefined } = $props();
+  const { cars, preview = false, onclick = undefined, filterExcluded = false } = $props();
 
   let ppFilters = $state([pp.all]);
   let tyresFilter = $state([tyres.all]);
@@ -66,7 +66,7 @@
     onmouseenter={() => (showButtons = true)}
     onmouseleave={() => (showButtons = false)}
   >
-    {#if !showButtons}
+    {#if !showButtons && !filterExcluded}
       <Button color="gray"><FilterOutline /></Button>
     {/if}
 
