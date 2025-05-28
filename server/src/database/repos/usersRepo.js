@@ -43,10 +43,10 @@ export async function addUser(email, password, nickname) {
 
 
 
-export async function getNicknameByEmail(email) {
+export async function getNicknameByUserId(userId) {
   const { nickname } = await db.get(
-    "SELECT nickname FROM users WHERE email = ?",
-    [email]
+    "SELECT nickname FROM users WHERE id = ?",
+    [userId]
   );
 
   return nickname;

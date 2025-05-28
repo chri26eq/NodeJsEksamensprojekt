@@ -5,7 +5,7 @@ import {
   nicknameExists,
   userCredentialsMatches,
   addUser,
-  getNicknameByEmail,
+  getNicknameByUserId,
   getUserIdByEmail,
 } from "../database/repos/usersRepo.js";
 
@@ -42,7 +42,7 @@ router.post("/auth/login", async (req, res) => {
     const matches = await userCredentialsMatches(email, password);
     if (matches) {
       const id = await getUserIdByEmail(email);
-      const nickname = await getNicknameByEmail(email);
+      const nickname = await getNicknameByUserId(id);
       req.session.user = {
         email: email,
         nickname: nickname,
