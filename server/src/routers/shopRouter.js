@@ -22,7 +22,7 @@ let cashBalance;
 router.all("/shop/{*splat}", async (req, res, next) => {
   if (req.session.user) {
     userEmail = req.session.user.email;
-    userId = await getUserIdByEmail(userEmail);
+    userId = req.session.user.id;
     cashBalance = await getCashBalanceByEmail(userEmail);
     next();
   } else {

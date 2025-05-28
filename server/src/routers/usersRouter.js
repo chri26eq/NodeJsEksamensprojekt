@@ -6,7 +6,7 @@ import {
 } from "../database/repos/usersRepo.js";
 import {
   addCarsToUser,
-  getUserCar,
+  getUserCarById,
   getUserCarsByUserId,
   removeUserCar,
   updateCarIsFavorite,
@@ -19,7 +19,7 @@ let userId;
 router.all("/users/{*splat}", async (req, res, next) => {
   if (req.session.user) {
     userEmail = req.session.user.email;
-    userId = await getUserIdByEmail(userEmail);
+    userId = req.session.user.id;
     next();
   } else {
     res.status(401).send({ error: "Not logged in" });
@@ -72,7 +72,7 @@ router.post("/users/usercars/favorite", async (req, res) => {
 router.delete("/users/usercars", async (req, res) => {
   const userCarId = req.body.user_car_id;
   try {
-    const car = await getUserCar(userId, userCarId);
+    const car = await getUserCarById(userCarId);
     if (!car) {
       return res.status(404).send({ error: "Car not found" });
     }

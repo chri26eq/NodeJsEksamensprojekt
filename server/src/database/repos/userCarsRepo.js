@@ -33,7 +33,7 @@ export async function getUserCarsByUserId(userId) {
   return result.map(applyCarEnhancements);
 }
 
-export async function getUserCar(userId, userCarId) {
+export async function getUserCarById(userCarId) {
   const result = await db.get(
     `
     SELECT 
@@ -56,9 +56,9 @@ export async function getUserCar(userId, userCarId) {
     JOIN car_models ON user_cars.car_model_id = car_models.id
     JOIN car_brands ON car_models.car_brand_id = car_brands.id
     LEFT JOIN countries ON car_brands.country_code = countries.code
-    WHERE user_cars.user_id = ? AND user_cars.id = ?
+    WHERE user_cars.id = ?
     `,
-    [userId, userCarId]
+    [userCarId]
   );
 
   return result ? applyCarEnhancements(result) : null;

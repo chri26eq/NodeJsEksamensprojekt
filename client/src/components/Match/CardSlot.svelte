@@ -10,16 +10,15 @@
     xl: " h-[22.25rem] w-[14.75rem] text-[1.25rem] ",
   }
 </script>
-<!-- // class={"flex flex-col justify-between items-center bg-white border border-gray-300 rounded-md shadow-xl/30 overflow-hidden" + -->
 {#if onclick}
   
-<button onclick={onclick} class={"flex flex-col bg-gray-500 rounded-md overflow-hidden items-center justify-center" + sizeClasses[size]}>
+<button onclick={onclick} class={"flex flex-col bg-[#a4a4a4] rounded-md overflow-hidden items-center justify-center hover:bg-[#8e8e8e]" + sizeClasses[size]}>
     {#if children}
     {@render children()}
     {/if}
 </button>
 {:else}
-<div class={"flex flex-col bg-gray-500 rounded-md overflow-hidden items-center justify-center" + sizeClasses[size]}>
+<div class={"flex flex-col bg-[#a4a4a4] rounded-md overflow-hidden items-center justify-center" + sizeClasses[size]}>
   {#if children}
   {@render children()}
   {/if}

@@ -5,7 +5,7 @@
   import UpgradeButton from "./UpgradeButton.svelte";
   import * as category from "../../utils/carCategory";
 
-  const { car, preview = false, size = "md" } = $props();
+  const { car, preview = false, size = "md", overlay = undefined } = $props();
 
   const sizeClasses = {
     xs: " h-[12.75rem] w-[8.25rem] text-[0.75rem] ",
@@ -48,6 +48,12 @@
     },
   };
 
+  const overlayClasses = {
+    winner: " ring-4 ring-green-500 ",
+    loser: " ring-4 ring-red-500 ",
+    tied: " ring-4 ring-yellow-500 ",
+  }
+
   let cardColor = $derived(() => {
     if (category.isLegendary(car)) return cardColors.pp90_100;
     else if (category.isSuper(car)) return cardColors.pp80_89;
@@ -59,8 +65,9 @@
 
 <div
   class={"flex flex-col shadow-xl/30 rounded-md overflow-hidden" +
-    sizeClasses[size]}
+    sizeClasses[size] + overlayClasses[overlay]}
 >
+
   <div class={"flex flex-1 items-center" + cardColor().topBar}>
     <p class="text-[0.9em] font-bold mx-[0.5em]">{car.brand_name + " " + car.user_car_id}</p>
   </div>

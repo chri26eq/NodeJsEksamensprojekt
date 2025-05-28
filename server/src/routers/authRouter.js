@@ -41,8 +41,8 @@ router.post("/auth/login", async (req, res) => {
     const { email, password } = req.body;
     const matches = await userCredentialsMatches(email, password);
     if (matches) {
-      const nickname = await getNicknameByEmail(email);
       const id = await getUserIdByEmail(email);
+      const nickname = await getNicknameByEmail(email);
       req.session.user = {
         email: email,
         nickname: nickname,
