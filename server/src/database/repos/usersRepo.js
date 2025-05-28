@@ -26,7 +26,7 @@ export async function nicknameExists(nickname) {
 }
 
 export async function userCredentialsMatches(email, password) {
-  const result = await db.get("SELECT password FROM users WHERE email = ?", [
+  const result = await db.get("SELECT password FROM users WHERE email = ? COLLATE NOCASE", [
     email,
   ]);
 
