@@ -1,23 +1,17 @@
-export function isStandard(car) {
-  return car.tyres == "Standard";
+export function isRWD(car) {
+  return car.drivetrain == "RWD";
 }
-export function isPerformance(car) {
-  return car.tyres == "Performance";
+export function isFWD(car) {
+  return car.drivetrain == "FWD";
 }
-export function isSlicks(car) {
-  return car.tyres == "Slicks";
-}
-export function isAllTerrain(car) {
-  return car.tyres == "All-terrain";
-}
-export function isOffroad(car) {
-  return car.tyres == "Offroad";
+export function is4X4(car) {
+  return car.drivetrain == "4X4";
 }
 export function all(car) {
   return true;
 }
 
-export function toggleTyresFilter(currentFilters, filterToToggle) {
+export function toggleDrivetrainFilter(currentFilters, filterToToggle) {
   if (filterToToggle === all) {
     // Hvis man klikker på "all", fjern andre filtre
     return [all];
