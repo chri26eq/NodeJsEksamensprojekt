@@ -10,7 +10,7 @@ export async function getUserById(id) {
 }
 
 export async function emailExists(email) {
-  const result = await db.get("SELECT email FROM users WHERE email = ?", [
+  const result = await db.get("SELECT email FROM users WHERE email = ? COLLATE NOCASE", [
     email,
   ]);
 
