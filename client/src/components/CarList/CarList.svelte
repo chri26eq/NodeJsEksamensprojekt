@@ -122,7 +122,7 @@
   </div>
 
   <div class="flex flex-wrap gap-6 justify-center w-full">
-    {#if cars.filter(matchesAnyFilter).length > 0}
+    {#if cars && cars.filter(matchesAnyFilter).length > 0}
       {#each cars as car (car.user_car_id)}
         {#if matchesAnyFilter(car)}
           {#if onclick}

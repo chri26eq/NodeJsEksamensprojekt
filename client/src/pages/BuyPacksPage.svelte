@@ -8,6 +8,10 @@
 
 <div class="flex justify-center gap-6">
 
-    <CarPack packName="Medium Pack" packPrice=5000 packSize=5/>
-    <CarPack packName="Medium Pack" packPrice=1 packSize=5/>
+
+    <CarPack packName="Feeling Lucky Pack" packPrice=1 numberOfCards=1 size="lg"/>
+    <CarPack packName="Medium Pack" packPrice=1 numberOfCards=5 size="lg"/>
+    <CarPack packName="Medium Pack" packPrice=1 numberOfCards=5 size="lg"/>
+    <CarPack packName="Medium Pack" packPrice=1 numberOfCards=5 size="lg"/>
+
 </div>

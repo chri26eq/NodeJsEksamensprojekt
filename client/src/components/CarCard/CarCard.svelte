@@ -64,7 +64,7 @@
 </script>
 
 <div
-  class={"flex flex-col shadow-xl/30 rounded-md overflow-hidden" +
+  class={"flex flex-col shadow-xl/30 rounded-md overflow-hidden hover:scale-105 transition-transform duration-200" +
     sizeClasses[size] + overlayClasses[overlay]}
 >
 

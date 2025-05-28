@@ -6,24 +6,28 @@
   import CarCard from "../CarCard/CarCard.svelte";
   import { updateUserContentFromServer } from "../../stores/userStore";
 
-  const { packName, packPrice, packSize } = $props();
+  const { packName, packPrice, numberOfCards, size="md" } = $props();
+
+  
+
+  const sizeClasses = {
+    xs: " h-[12.75rem] w-[8.25rem] text-[0.75rem] ",
+    sm: " h-[14.875rem] w-[9.625rem] text-[0.875rem] ",
+    md: " h-[17rem] w-[11rem] text-[1rem] ",
+    lg: " h-[19.125rem] w-[12.375rem] text-[1.125rem] ",
+    xl: " h-[21.25rem] w-[13.75rem] text-[1.25rem] ",
+  };
 
   const modalTitle = `Buy ${packName}?`;
-  const modalMessage = `Do you want to pay ${packPrice} CarCash to buy the ${packName} containing ${packSize} CarCards?`;
+  const modalMessage = `Do you want to pay ${packPrice} CarCash to buy the ${packName} containing ${numberOfCards} ${numberOfCards == 1 ? "CarCard?" : "CarCards?"}`;
 
   let showConfirmModal = $state(false);
   let showResultModal = $state(false);
   let newCars = $state([]);
 
-  function openBuyPackModal(event) {
-    event.stopPropagation();
-    showConfirmModal = true;
-  }
 
-  async function confirmBuyPack(event) {
-    event.stopPropagation();
-    const result = await buyCarPack(packPrice, packSize);
-    showConfirmModal = false;
+  async function confirmBuyPack() {
+    const result = await buyCarPack(packPrice, numberOfCards);
 
     if (result.cars) {
       toast.success(result.message);
@@ -37,10 +41,7 @@
     await updateUserContentFromServer();
   }
 
-  function cancelBuyPack(event) {
-    event.stopPropagation();
-    showConfirmModal = false;
-  }
+  
 
   function closeResultModal(event) {
     event.stopPropagation();
@@ -49,23 +50,40 @@
   }
 </script>
 
-<div class="flex flex-col gap-4">
-  <div class="flex flex-col bg-amber-100 h-50 w-30">
-    <div class="flex-1 bg-amber-700 mt-3"></div>
-    <div class="flex-1 bg-amber-500"></div>
-  </div>
-  <Button onclick={openBuyPackModal} color="light">Buy</Button>
+<button
+onclick={() => showConfirmModal = true}
+class={
+  "flex flex-col items-center justify-between rounded-[0.5em] overflow-hidden shadow-xl/30 hover:scale-105 transition-transform duration-200 border border-black " +
+  sizeClasses[size]
+}
+
+>
+<!-- Top: pack name -->
+<div class="flex-1 w-full flex items-center justify-center bg-amber-700/90 px-[0.2em] py-[0.2em]">
+  <p class="text-white text-[1.2em] font-bold  rotate-[10deg]">
+    {packName}
+  </p>
 </div>
 
-{#if showConfirmModal}
+<!-- Bottom: pack info -->
+<div class="flex-1 w-full flex items-center justify-center bg-amber-500/90 px-[0.2em] py-[0.2em]">
+  <p class="text-white text-[1.1em] font-medium text-center ">
+    {numberOfCards} random {numberOfCards == 1 ? "CarCard" : "CarCards"}
+  </p>
+</div>
+
+</button>
+
+
+
   <BuySellModal
+  bind:open={showConfirmModal}
     title={modalTitle}
     message={modalMessage}
     price={packPrice}
-    onClickConfirm={confirmBuyPack}
-    onClickCancel={cancelBuyPack}
+    onConfirm={confirmBuyPack}
   />
-{/if}
+
 
 {#if showResultModal}
   <div class="fixed inset-0 bg-black/30 flex justify-center items-center z-50">

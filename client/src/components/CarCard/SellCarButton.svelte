@@ -18,10 +18,7 @@ let carValue = $derived(car.value);
   const modalTitle = "Sell Car?";
   let modalMessage = $derived(`Do you want to sell your ${carBrand} ${carModel} for ${carValue} CarCash?`
 );
-  function openSellModal(event) {
-    event.stopPropagation();
-    showModal = true;
-  }
+  
 
   async function confirmSale(event) {
     event.stopPropagation();
@@ -32,29 +29,25 @@ let carValue = $derived(car.value);
     } else {
       toast.error(message);
     }
-    showModal = false;
     await updateUserContentFromServer();
   }
 
-  function cancelSale(event) {
-    event.stopPropagation();
-    showModal = false;
-  }
+  
 </script>
 
 
-  <button onclick={openSellModal}>
+  <button onclick={() => showModal = true}>
     <CashOutline class={"hover:text-red-500 " + className} />
   </button>
 
-  {#if showModal}
+  
     <BuySellModal
+    bind:open={showModal}
       title={modalTitle}
       message={modalMessage}
       price={carValue}
-      onClickConfirm={confirmSale}
-      onClickCancel={cancelSale}
+      onConfirm={confirmSale}
       sell
     />
-  {/if}
+ 
 
