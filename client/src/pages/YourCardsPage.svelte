@@ -3,13 +3,15 @@
   import CarList from "../components/CarList/CarList.svelte";
   import { userCars } from "../stores/userStore";
   import { Button } from "flowbite-svelte";
+  import { derived } from "svelte/store";
 
+  const userHasNoCards = derived(userCars, $userCars => $userCars?.length === 0);
   function buttonHandler() {
     navigate("/buycards", { replace: true });
   }
 </script>
 
-{#if $userCars.length === 0}
+{#if $userHasNoCards}
   <div class="flex flex-col items-center justify-center text-center">
     <h1 class="text-4xl md:text-5xl font-bold mb-4">You have no CarCards</h1>
     <Button size="xl" color="green" onclick={buttonHandler}>Go to store</Button>

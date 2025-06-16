@@ -21,6 +21,7 @@
     src="/sport-car.png"
     alt="Sports car"
     class="object-contain w-full px-[1em]"
+    draggable="false"
   />
 
   <p class="text-[1.8em] font-semibold mb-[0.5em] rotate-180">CarCards</p>

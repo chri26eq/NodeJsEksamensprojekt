@@ -29,6 +29,7 @@
       src="/sport-car.png"
       alt="Sports car"
       class="object-contain w-full max-w-sm md:max-w-md lg:max-w-lg"
+      draggable="false"
     />
   </div>
 </div>
