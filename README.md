@@ -45,6 +45,7 @@ For convenience, the database comes seeded with four default users:
 - Email: `2`, Password: `2`  
 - Email: `3`, Password: `3`  
 - Email: `4`, Password: `4`  
+- Email: `5`, Password: `5`  
 
 You're also welcome to sign up with your own credentials.
 

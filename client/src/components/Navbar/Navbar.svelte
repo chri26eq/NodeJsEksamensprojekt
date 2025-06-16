@@ -10,7 +10,7 @@
   let showMenu = $state(false);
 
   function toggleMenu() {
-    showMenu = !showMenu
+    showMenu = !showMenu;
   }
 </script>
 
@@ -41,19 +41,27 @@
         <nav
           class={`flex-col md:flex md:flex-row gap-2 p-4 ${showMenu ? "flex" : "hidden"}`}
         >
-          <Link to="/" let:active><NavbarItem text="Home" {active} /></Link>
+          <Link to="/" let:active onclick={toggleMenu}>
+            <NavbarItem text="Home" {active} />
+          </Link>
 
           {#if $isLoggedIn}
             <Link to="/yourcards" let:active onclick={toggleMenu}
-              ><NavbarItem text="Your Cards" {active} /></Link
-            >
+              ><NavbarItem text="Your Cards" {active} />
+            </Link>
             <Link to="/buycards" let:active onclick={toggleMenu}
-              ><NavbarItem text="Buy Cards" {active} /></Link
-            >
+              ><NavbarItem text="Buy Cards" {active} />
+            </Link>
             <Link to="/match" let:active onclick={toggleMenu}
-              ><NavbarItem text="Find Match" {active} /></Link
-            >
-            <NavbarItem text="Logout" onclick={() => { logout(); toggleMenu(); }} />
+              ><NavbarItem text="Find Match" {active} />
+            </Link>
+            <NavbarItem
+              text="Logout"
+              onclick={() => {
+                logout();
+                toggleMenu();
+              }}
+            />
           {:else}
             <Link to="/login" let:active onclick={toggleMenu}
               ><NavbarItem text="Login" {active} /></Link

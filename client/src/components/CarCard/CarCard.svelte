@@ -69,7 +69,7 @@
 >
 
   <div class={"flex flex-1 items-center" + cardColor().topBar}>
-    <p class="text-[0.9em] font-bold mx-[0.5em]">{car.brand_name + " " + car.user_car_id}</p>
+    <p class="text-[0.9em] font-bold mx-[0.5em]">{car.brand_name}</p>
   </div>
   <div class="flex flex-6">
     <div class={"flex flex-col flex-7 " + cardColor().mainBody}>

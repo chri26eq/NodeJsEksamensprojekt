@@ -1,14 +1,16 @@
 <script>
-  import { onDestroy, onMount } from "svelte";
+  import { onDestroy } from "svelte";
   import io from "socket.io-client";
   import { getBaseServerUrl } from "../stores/urlStore";
-  import { user, userCars } from "../stores/userStore";
+  import { updateUserContentFromServer, user, userCars } from "../stores/userStore";
   import CarCard from "../components/CarCard/CarCard.svelte";
   import CardSlot from "../components/Match/CardSlot.svelte";
   import { Button, Modal } from "flowbite-svelte";
   import Track from "../components/Track/Track.svelte";
   import CarList from "../components/CarList/CarList.svelte";
   import CardPlaceHolder from "../components/Match/CardPlaceHolder.svelte";
+  import GameOverModal from "../components/Match/GameOverModal.svelte";
+  import ReadyButton from "../components/Match/ReadyButton.svelte";
 
   let socket = io(getBaseServerUrl(), {
     withCredentials: true,
@@ -18,7 +20,7 @@
   let raceStarted = $state(false);
   let matchWinner = $state(undefined);
 
-  let gameOver = $derived(!!matchWinner);
+  let gameOver = $derived(matchWinner !== undefined);
   let opponentLeft = $state(false);
 
   let races = $state([]);
@@ -77,9 +79,9 @@
   socket.on("matchResult", (result) => {
     matchWinner = result.winner;
     opponentLeft = result.opponentLeft;
+    gameOver = true;
+    updateUserContentFromServer();
   });
-
-  // -------------------------------------------------------------------------------------------
 
   // -------------------------------------------------------------------------------------------
 
@@ -121,17 +123,16 @@
   }
 
   function handleReadyButtonClick() {
-    playerIsReady = !playerIsReady;
     socket.emit("clickedReady", {
       roomId: currentRoom.id,
-      ready: playerIsReady,
+      ready: !playerIsReady,
     });
   }
 </script>
 
 {#if currentRoom}
   <div class="flex flex-row gap-6">
-    <div  class=" flex flex-col gap-2">
+    <div class=" flex flex-col gap-2">
       <!-- Valg af kort -->
       <div class="flex flex-row">
         <h2 class="flex flex-1 text-lg font-bold">Choose cars</h2>
@@ -196,16 +197,7 @@
     </div>
     <div>
       {#if allCarsChosen}
-        <Button
-          size="xl"
-          color={raceStarted ? "blue" : playerIsReady ? "green" : "red"}
-          onclick={raceStarted ? undefined : handleReadyButtonClick}
-          >{raceStarted
-            ? "Racing!"
-            : playerIsReady
-              ? "Ready!"
-              : "Ready?"}</Button
-        >
+        <ReadyButton {handleReadyButtonClick} {playerIsReady} {raceStarted} />
       {/if}
     </div>
   </div>
@@ -215,12 +207,7 @@
   </Modal>
 
   <!-- -----------------------GAME OVER----------------------- -->
-  <Modal size="xl" title="Race" bind:open={gameOver} autoclose>
-    <h2>{matchWinner.nickname} WON!!</h2>
-    {#if opponentLeft}
-      <h4 color="red">Opponent left match.</h4>
-    {/if}
-  </Modal>
+  <GameOverModal bind:open={gameOver} {matchWinner} {opponentLeft} />
 
   <!-- -----------------------FIND GAME BUTTON----------------------- -->
 {:else}

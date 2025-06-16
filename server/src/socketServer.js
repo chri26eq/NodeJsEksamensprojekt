@@ -1,13 +1,10 @@
 import { Server } from "socket.io";
-import { getUserCarById } from "./database/repos/userCarsRepo.js";
 import {
   getRandomTrackIds,
   getTrackById,
 } from "./database/repos/tracksRepo.js";
 import { calculateWinner } from "./utils/gameLogic/matchCalculation.js";
-
-const gameRooms = new Map();
-
+import { addToCashBalanceByUserId } from "./database/repos/usersRepo.js"
 export function initSocket(server, sessionMiddleware) {
   const io = new Server(server, {
     cors: {
@@ -18,21 +15,20 @@ export function initSocket(server, sessionMiddleware) {
 
   io.engine.use(sessionMiddleware);
 
+  const gameRooms = new Map();
+
   io.on("connection", (socket) => {
     const session = socket.request.session;
-    const user = session.user; // { email: '1', nickname: 'user1', id: 1 }
-    console.log("✅ A client connected:", socket.id);
+    const user = session.user; // { email: 'aa@gmail.dk', nickname: 'user1', id: 1 }
 
     if (user) {
       // -------------------------------------------------------------------------------------------
 
       socket.on("findGame", async () => {
-        // Find ledigt room...
         let room = [...gameRooms.values()].find(
           (room) => room.players.length === 1
         );
 
-        // ...og hvis der er et rum
         if (room) {
           room.players.push({
             userId: user.id,
@@ -41,14 +37,11 @@ export function initSocket(server, sessionMiddleware) {
             ready: false,
             socketId: socket.id,
           });
-        }
-        // ...ellers så oprettes et nyt rum
-        else {
+        } else {
           room = {
             id: crypto.randomUUID(),
             players: [
               {
-                //og put sig selv i det nye rum
                 userId: user.id,
                 nickname: user.nickname,
                 cars: {},
@@ -62,7 +55,6 @@ export function initSocket(server, sessionMiddleware) {
         }
 
         socket.join(room.id);
-        console.log(`🧩 ${user.nickname} joined room ${room.id}`);
         io.to(room.id).emit("roomContent", room);
       });
 
@@ -75,15 +67,10 @@ export function initSocket(server, sessionMiddleware) {
         const player = room.players.find((p) => p.userId === user.id);
         if (!player) return;
 
-        // Gem valgte bil for den spiller
         player.cars[trackId] = car;
 
-        // hvis playeren har valgt alle fem biler, så send til alle i rummet
-        console.log(player.nickname, Object.keys(player.cars).length);
-        if (Object.keys(player.cars).length === 5) {
+        if (Object.values(player.cars).length === 5) {
           io.to(room.id).emit("roomContent", room);
-
-          // ellers send til modstanderen
         } else {
           socket.to(room.id).emit("roomContent", room);
         }
@@ -102,9 +89,6 @@ export function initSocket(server, sessionMiddleware) {
 
         player.ready = false;
 
-        // Send opdateret spillerdata til alle i rummet
-        // nødt til at sende til alle i rummet (io.to()) da den ene spiller skal vide at den anden har fjernet en bil,
-        // og den anden skal have frataget ready knappen, som afhænger af antal biler.
         io.to(room.id).emit("roomContent", room);
       });
 
@@ -117,94 +101,118 @@ export function initSocket(server, sessionMiddleware) {
         const player = room.players.find((p) => p.userId === user.id);
         if (!player) return;
 
-        // Opdater ready status
         player.ready = ready;
 
-        io.to(room.id).emit("roomContent", room); // fortæller alle spillere at spiller trykkede "klar"
+        io.to(room.id).emit("roomContent", room);
 
         const allReady =
           room.players.length === 2 && room.players.every((p) => p.ready);
         if (!allReady) return;
 
         io.to(roomId).emit("raceStarted");
+
         const playerNrOfWins = {
           [room.players[0].userId]: 0,
           [room.players[1].userId]: 0,
         };
 
-        // Løb igennem de 5 tracks
         for (let i = 0; i < room.trackIds.length; i++) {
           const trackId = room.trackIds[i];
           const track = await getTrackById(trackId);
 
-          // Find de to spillere og deres valgte biler til denne bane
           const cars = room.players.map((player) => player.cars[trackId]);
 
-          // Vinderen bestemmes
           const roundWinnerCar = calculateWinner(cars, track);
+          // Vent 5 sekunder for at simulere et race
+          await new Promise((res) => setTimeout(res, 5000));
+          const opponentLeft = room.players.length !== 2;
+          if (opponentLeft) {
+            await endMatch(opponentLeft);
+            return;
+          }
 
           if (roundWinnerCar) {
-            // Find ejeren af vinderbil
             const roundWinner = room.players.find(
               (p) => p.cars[trackId].user_car_id === roundWinnerCar.user_car_id
             );
-            // Vent 5 sekunder for at simulere et race
-            await new Promise((res) => setTimeout(res, 5000));
-
-            // hvis en spiller er leavet
-            if (room.players.length !== 2) {
-              io.to(roomId).emit("matchResult", {
-                winner: {
-                  nickname: room.players[0].nickname,
-                  userId: room.players[0].userId,
-                },
-                opponentLeft: true,
-              });
-              return;
-            }
-
             playerNrOfWins[roundWinner.userId] += 1;
-            io.to(roomId).emit("raceResult", {
-              trackId: trackId,
-              winner: {
-                nickname: roundWinner.nickname,
-                userId: roundWinner.userId,
-                carId: roundWinnerCar.user_car_id,
-              },
-            });
+            endRace(trackId, roundWinner, roundWinnerCar)
           } else {
-            io.to(roomId).emit("raceResult", {
-              trackId: trackId,
-              winner: null,
-            });
+            endRace(trackId);
           }
         }
+
         const sortedWins = Object.entries(playerNrOfWins).sort(
           (a, b) => b[1] - a[1]
         );
 
         if (sortedWins[0][1] === sortedWins[1][1]) {
-          io.to(roomId).emit("matchResult", {
-            winner: null,
-            opponentLeft: false,
-          });
+          endMatch();
           return;
         }
 
-        const [matchWinnerId, nrOfWins] = sortedWins[0];
+        const [matchWinnerId, nrOfWins] = sortedWins[0]; // [key, value]
 
         const winner = room.players.find((p) => p.userId == matchWinnerId);
 
-        io.to(roomId).emit("matchResult", {
-          winner: {
-            nickname: winner.nickname,
-            userId: winner.userId,
-          },
-          opponentLeft: false,
-        });
+        await endMatch(false, winner);
+
+
+        function endRace(
+          trackId,
+          winner = undefined,
+          winnerCar = undefined
+        ) {
+          io.to(roomId).emit("raceResult", {
+            trackId: trackId,
+            winner:
+              winner && winnerCar
+                ? {
+                    nickname: winner.nickname,
+                    userId: winner.userId,
+                    carId: winnerCar.user_car_id,
+                  }
+                : null,
+          });
+        }
+
+        async function endMatch(opponentLeft = false, winner = null) {
+          let result = {};
+          if (opponentLeft) {
+            result = {
+              winner: {
+                nickname: room.players[0].nickname,
+                userId: room.players[0].userId,
+              },
+              opponentLeft: true,
+            };
+          } else if (winner) {
+            result = {
+              winner: {
+                nickname: winner.nickname,
+                userId: winner.userId,
+              },
+              opponentLeft: false,
+            };
+          } else {
+            result = {
+              winner: null,
+              opponentLeft: false,
+            };
+          }
+          if (result.winner) {
+            await addToCashBalanceByUserId(result.winner.userId, 1000)
+          }
+          io.to(roomId).emit("matchResult", result);
+        }
       });
 
       // -------------------------------------------------------------------------------------------
+
+      // -------------------------------------------------------------------------------------------
+      
+
+  
 
       // -------------------------------------------------------------------------------------------
 
