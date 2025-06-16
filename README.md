@@ -13,7 +13,7 @@ Use the provided `.env.example` files as templates to create your own `.env` fil
 
 ## Getting Started
 
-Run the following command:
+After creating your own `.env` files, run the following command:
 
 ```bash
 npm run install-start
