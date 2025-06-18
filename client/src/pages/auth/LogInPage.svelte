@@ -1,8 +1,10 @@
 <script>
-  import { toast } from "svelte-french-toast";
-  import { login } from "../../utils/auth";
   import { navigate } from "svelte-routing";
   import { Button } from "flowbite-svelte";
+  import { toast } from "svelte-french-toast";
+
+  import { login } from "../../utils/auth.js";
+
   const {} = $props();
 
   let email = $state("");
@@ -50,31 +52,29 @@
 
 <form onsubmit={handleSubmit} class="max-w-sm mx-auto">
   <div class="mb-5">
-    <label
-      for="email"
-      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+    <label for="email" class="block mb-2 text-sm font-medium text-gray-900"
       >Your email</label
     >
-    <!-- //type="email" -->
+
+    <!-- email inputfield should include type="email", but this has been removed in order to use the dummy-users 1, 2, 3, etc... -->
+    <!-- type="email" -->
     <input
       bind:value={email}
       id="email"
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
       placeholder="Email..."
       required
     />
   </div>
   <div class="mb-5">
-    <label
-      for="password"
-      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+    <label for="password" class="block mb-2 text-sm font-medium text-gray-900"
       >Your password</label
     >
     <input
       bind:value={password}
       type="password"
       id="password"
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
       placeholder="Password..."
       required
     />

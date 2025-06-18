@@ -1,13 +1,13 @@
 <script>
   import { Router, Route } from "svelte-routing";
-
+  
+  import PrivateRoute from "../PrivateRoute/PrivateRoute.svelte";
   import HomePage from "../../pages/HomePage.svelte";
   import LogInPage from "../../pages/auth/LogInPage.svelte";
   import SignUpPage from "../../pages/auth/SignUpPage.svelte";
   import YourCardsPage from "../../pages/YourCardsPage.svelte";
   import BuyPacksPage from "../../pages/BuyPacksPage.svelte";
   import MatchPage from "../../pages/MatchPage.svelte";
-  import PrivateRoute from "../PrivateRoute/PrivateRoute.svelte";
 
   const { url = "" } = $props();
 </script>

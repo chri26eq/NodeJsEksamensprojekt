@@ -16,7 +16,6 @@
 >
   <p class="text-[1.8em] font-semibold mt-[0.5em]">CarCards</p>
 
-
   <img
     src="/sport-car.png"
     alt="Sports car"

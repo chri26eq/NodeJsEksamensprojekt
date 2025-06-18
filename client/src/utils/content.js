@@ -1,7 +1,5 @@
 import { fetchGet, fetchPost } from "./fetch.js";
 import { getBaseServerUrl } from "../stores/urlStore.js";
-import { user, isLoggedIn } from "../stores/userStore.js";
-import toast from "svelte-french-toast";
 
 const URL = getBaseServerUrl();
 

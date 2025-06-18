@@ -3,9 +3,11 @@
     CheckPlusCircleOutline,
     CirclePlusOutline,
   } from "flowbite-svelte-icons";
-  import { updateUserContentFromServer } from "../../stores/userStore";
-  import { upgradeCar } from "../../utils/shop";
   import toast from "svelte-french-toast";
+
+  import { updateUserContentFromServer } from "../../stores/userStore.js";
+  import { upgradeCar } from "../../utils/shop.js";
+  
   import BuySellModal from "../BuySellModal.svelte";
 
   let { car, class: className = "" } = $props();

@@ -1,11 +1,13 @@
 <script>
-  import CarCard from "../CarCard/CarCard.svelte";
-  import { Button } from "flowbite-svelte";
-  import * as pp from "./filters/pp.js";
-  import * as tyres from "./filters/tyres.js";
-  import * as drivetrain from "./filters/drivetrain.js";
   import { FilterOutline } from "flowbite-svelte-icons";
+  import { Button } from "flowbite-svelte";
 
+  import * as pp from "../../utils/filters/pp.js";
+  import * as tyres from "../../utils/filters/tyres.js";
+  import * as drivetrain from "../../utils/filters/drivetrain.js";
+  
+  import CarCard from "../CarCard/CarCard.svelte";
+  
   const { cars, preview = false, onclick = undefined, filterExcluded = false } = $props();
 
   let ppFilters = $state([pp.all]);

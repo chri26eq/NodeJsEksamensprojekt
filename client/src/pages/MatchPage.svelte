@@ -1,11 +1,14 @@
 <script>
   import { onDestroy } from "svelte";
+
+  import { Button, Modal } from "flowbite-svelte";
   import io from "socket.io-client";
-  import { getBaseServerUrl } from "../stores/urlStore";
-  import { updateUserContentFromServer, user, userCars } from "../stores/userStore";
+
+  import { getBaseServerUrl } from "../stores/urlStore.js";
+  import { updateUserContentFromServer, user, userCars } from "../stores/userStore.js";
+
   import CarCard from "../components/CarCard/CarCard.svelte";
   import CardSlot from "../components/Match/CardSlot.svelte";
-  import { Button, Modal } from "flowbite-svelte";
   import Track from "../components/Track/Track.svelte";
   import CarList from "../components/CarList/CarList.svelte";
   import CardPlaceHolder from "../components/Match/CardPlaceHolder.svelte";

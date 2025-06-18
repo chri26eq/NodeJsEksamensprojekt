@@ -1,12 +1,14 @@
 <script>
   import { onMount } from "svelte";
+
   import { navigate } from "svelte-routing";
-  import { isLoggedIn } from "../../stores/userStore";
+
   import { checkSession } from "../../utils/auth";
+  import { isLoggedIn } from "../../stores/userStore";
 
   const { children } = $props();
   onMount(async () => {
-    await checkSession()
+    await checkSession();
     if (!$isLoggedIn) {
       navigate("/login", {
         state: { from: location },

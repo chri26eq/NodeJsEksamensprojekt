@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+
   import { getTrackById } from "../../utils/content";
 
   const { trackId, size = "md" } = $props();
@@ -19,32 +20,25 @@
   });
 </script>
 
-<!-- id: 16
-length: 5800
-name: "Coastal Cruise"
-num_corners: 15
-surface: "Asphalt" -->
 
-  <div
-    class={"flex flex-col bg-gray-200 rounded-md overflow-hidden justify-between border-2" +
-      sizeClasses[size]}
-  >
-    <div
-      class="flex flex-3 bg-amber-100 items-center justify-center text-center"
-    >
-      <p class="text-[1.1em] font-bold">{track ? track.name : "Loading..."}</p>
-    </div>
-
-    <div class="flex flex-1 px-[0.5em] border-t-2">
-      <p class="flex-1">Length:</p>
-      <p class="flex-1">{track ? track.length / 1000 + ' km.' : "Loading..."}</p>
-    </div>
-    <div class="flex flex-1 px-[0.5em] border-t-2">
-      <p class="flex-1">Corners:</p>
-      <p class="flex-1">{track ? track.num_corners : "Loading..."}</p>
-    </div>
-    <div class="flex flex-1 px-[0.5em] border-t-2">
-      <p class="flex-1">Surface:</p>
-      <p class="flex-1">{track ? track.surface : "Loading..."}</p>
-    </div>
+<div
+  class={"flex flex-col bg-gray-200 rounded-md overflow-hidden justify-between border-2" +
+    sizeClasses[size]}
+>
+  <div class="flex flex-3 bg-amber-100 items-center justify-center text-center">
+    <p class="text-[1.1em] font-bold">{track ? track.name : "Loading..."}</p>
   </div>
+
+  <div class="flex flex-1 px-[0.5em] border-t-2">
+    <p class="flex-1">Length:</p>
+    <p class="flex-1">{track ? track.length / 1000 + " km." : "Loading..."}</p>
+  </div>
+  <div class="flex flex-1 px-[0.5em] border-t-2">
+    <p class="flex-1">Corners:</p>
+    <p class="flex-1">{track ? track.num_corners : "Loading..."}</p>
+  </div>
+  <div class="flex flex-1 px-[0.5em] border-t-2">
+    <p class="flex-1">Surface:</p>
+    <p class="flex-1">{track ? track.surface : "Loading..."}</p>
+  </div>
+</div>

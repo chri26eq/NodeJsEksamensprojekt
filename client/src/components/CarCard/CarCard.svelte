@@ -1,9 +1,11 @@
 <script>
   import { CashOutline } from "flowbite-svelte-icons";
+
+  import * as category from "../../utils/filters/pp.js";
+
   import FavoriteButton from "./FavoriteButton.svelte";
   import SellCarButton from "./SellCarButton.svelte";
   import UpgradeButton from "./UpgradeButton.svelte";
-  import * as category from "../CarList/filters/pp";
 
   const { car, preview = false, size = "md", overlay = undefined } = $props();
 
@@ -52,22 +54,22 @@
     winner: " ring-[0.5em] ring-green-500 ",
     loser: " ring-[0.5em] ring-red-500 ",
     tied: " ring-[0.5em] ring-yellow-500 ",
-  }
+  };
 
   let cardColor = $derived(() => {
     if (category.isLegendary(car)) return cardColors.pp90_100;
     else if (category.isSuper(car)) return cardColors.pp80_89;
     else if (category.isRare(car)) return cardColors.pp60_79;
     else if (category.isUncommon(car)) return cardColors.pp40_59;
-    else if (category.isCommon(car))return cardColors.pp00_39;
+    else if (category.isCommon(car)) return cardColors.pp00_39;
   });
 </script>
 
 <div
   class={"flex flex-col shadow-xl/30 rounded-md overflow-hidden hover:scale-105 transition-transform duration-200" +
-    sizeClasses[size] + overlayClasses[overlay]}
+    sizeClasses[size] +
+    overlayClasses[overlay]}
 >
-
   <div class={"flex flex-1 items-center" + cardColor().topBar}>
     <p class="text-[0.9em] font-bold mx-[0.5em]">{car.brand_name}</p>
   </div>

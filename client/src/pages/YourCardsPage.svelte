@@ -1,11 +1,15 @@
 <script>
-  import { navigate } from "svelte-routing";
-  import CarList from "../components/CarList/CarList.svelte";
-  import { userCars } from "../stores/userStore";
-  import { Button } from "flowbite-svelte";
   import { derived } from "svelte/store";
 
+  import { navigate } from "svelte-routing";
+  import { Button } from "flowbite-svelte";
+
+  import { userCars } from "../stores/userStore.js";
+
+  import CarList from "../components/CarList/CarList.svelte";
+
   const userHasNoCards = derived(userCars, $userCars => $userCars?.length === 0);
+  
   function buttonHandler() {
     navigate("/buycards", { replace: true });
   }

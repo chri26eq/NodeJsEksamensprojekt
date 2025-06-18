@@ -1,8 +1,10 @@
 <script>
   import { Router, Link } from "svelte-routing";
   import { BarsOutline, CloseOutline } from "flowbite-svelte-icons";
-  import { isLoggedIn } from "../../stores/userStore";
+
+  import { isLoggedIn } from "../../stores/userStore.js";
   import { logout } from "../../utils/auth.js";
+
   import NavbarItem from "./NavbarItem.svelte";
   import CashBalance from "./CashBalance.svelte";
 

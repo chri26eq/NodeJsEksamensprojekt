@@ -11,7 +11,7 @@
 </script>
 
 {#if onclick}
-  <button onclick={onclick} class={itemClass()}>{text}</button>
+  <button {onclick} class={itemClass()}>{text}</button>
 {:else}
   <div class={itemClass()}>{text}</div>
 {/if}

@@ -12,17 +12,19 @@
   } = $props();
 </script>
 
-<Modal size="sm" title={title} bind:open autoclose>
-  
+<Modal size="sm" {title} bind:open autoclose>
   <p class="mb-4">{message}</p>
   <div class="flex justify-end gap-2">
     <Button color={sell ? "green" : "red"} onclick={() => (open = false)}
       >Cancel</Button
     >
-    <Button class="gap-1" color={sell ? "red" : "green"} onclick={(event) => {
-      onConfirm(event)
-      open = false}}
-      >{sell ? "Sell:" : "Buy:"} {Math.abs(price)}<CashOutline /></Button
+    <Button
+      class="gap-1"
+      color={sell ? "red" : "green"}
+      onclick={(event) => {
+        onConfirm(event);
+        open = false;
+      }}>{sell ? "Sell:" : "Buy:"} {Math.abs(price)}<CashOutline /></Button
     >
   </div>
 </Modal>

@@ -1,8 +1,9 @@
+import { navigate } from "svelte-routing";
+import toast from "svelte-french-toast";
+
 import { fetchGet, fetchPost } from "../utils/fetch.js";
 import { getBaseServerUrl } from "../stores/urlStore.js";
 import { user, isLoggedIn, updateUserContentFromServer } from "../stores/userStore.js";
-import toast from "svelte-french-toast";
-import { navigate } from "svelte-routing";
 
 const URL = getBaseServerUrl();
 
