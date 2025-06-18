@@ -1,4 +1,4 @@
-export function applyCarEnhancements(car) {
+export function calculateCarStats(car) {
   return applyCarValue(applyUpgradeBonus(applyPerformancePoints(car)));
 }
 
@@ -11,10 +11,11 @@ export function applyPerformancePoints(car) {
   const weights = { speed: 1 / 3, accel: 1 / 3, handl: 1 / 3 };
   const MAX_SPEED = 500;
   const MAX_ACCEL = 2000;
+  const MAX_HANDL = 100;
 
   const normS = limit(car.top_speed / MAX_SPEED);
   const normA = limit((MAX_ACCEL - car.accel_0_to_100) / MAX_ACCEL);
-  const normH = limit(car.handling / 100);
+  const normH = limit(car.handling / MAX_HANDL);
 
   const pp =
     (weights.speed * normS + weights.accel * normA + weights.handl * normH) *

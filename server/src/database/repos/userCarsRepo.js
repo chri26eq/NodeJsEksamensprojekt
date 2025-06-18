@@ -1,5 +1,6 @@
-import { applyCarEnhancements } from "../../utils/gameLogic/carEnhancements.js";
 import db from "../connection.js";
+
+import { calculateCarStats } from "../../utils/gameLogic/carCalculation.js";
 
 export async function getUserCarsByUserId(userId) {
   const result = await db.all(
@@ -30,7 +31,7 @@ export async function getUserCarsByUserId(userId) {
     [userId]
   );
 
-  return result.map(applyCarEnhancements);
+  return result.map(calculateCarStats);
 }
 
 export async function getUserCarById(userCarId) {
@@ -61,7 +62,7 @@ export async function getUserCarById(userCarId) {
     [userCarId]
   );
 
-  return result ? applyCarEnhancements(result) : null;
+  return result ? calculateCarStats(result) : null;
 }
 
 export async function addCarsToUser(userId, carIds) {
@@ -128,7 +129,7 @@ export async function getNewestUserCarsByUserId(userId, nrOfCars) {
     [userId, nrOfCars]
   );
 
-  return result.map(applyCarEnhancements);
+  return result.map(calculateCarStats);
 }
 
 

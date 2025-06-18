@@ -1,16 +1,16 @@
 import { Router } from "express";
+
 import {
   addToCashBalanceByUserId,
   getCashBalanceByUserId,
-  getUserIdByEmail,
 } from "../database/repos/usersRepo.js";
 import {
-  addCarsToUser,
   getUserCarById,
   getUserCarsByUserId,
   removeUserCar,
   updateCarIsFavorite,
 } from "../database/repos/userCarsRepo.js";
+
 const router = Router();
 
 let userEmail;
@@ -35,8 +35,6 @@ router.get("/users/cashbalance", async (req, res) => {
     res.status(500).send({ error: "Internal server error" });
   }
 });
-
-
 
 router.get("/users/usercars", async (req, res) => {
   try {

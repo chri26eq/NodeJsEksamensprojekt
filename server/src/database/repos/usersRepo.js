@@ -1,4 +1,5 @@
 import db from "../connection.js";
+
 import { encrypt, compare } from "../../utils/hashing.js";
 
 export async function getUserById(id) {

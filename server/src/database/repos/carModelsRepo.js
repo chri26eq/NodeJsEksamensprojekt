@@ -1,5 +1,6 @@
-import { applyPerformancePoints } from "../../utils/gameLogic/carEnhancements.js"
 import db from "../connection.js";
+
+import { applyPerformancePoints } from "../../utils/gameLogic/carCalculation.js"
 
 export async function getCarModels() {
   let result = await db.all("SELECT * FROM car_models");

@@ -1,8 +1,8 @@
 import { Router } from "express";
+
 import {
   addToCashBalanceByUserId,
   getCashBalanceByUserId,
-  getUserIdByEmail,
   updateCashBalanceByUserId,
 } from "../database/repos/usersRepo.js";
 import {
@@ -10,6 +10,7 @@ import {
   getNewestUserCarsByUserId,
   updateCarIsUpgraded,
 } from "../database/repos/userCarsRepo.js";
+
 import { generateCarPack } from "../utils/gameLogic/carPacks.js";
 
 const router = Router();

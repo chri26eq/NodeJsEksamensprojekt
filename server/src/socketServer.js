@@ -1,10 +1,9 @@
 import { Server } from "socket.io";
-import {
-  getRandomTrackIds,
-  getTrackById,
-} from "./database/repos/tracksRepo.js";
+
+import { getRandomTrackIds, getTrackById } from "./database/repos/tracksRepo.js";
 import { calculateWinner } from "./utils/gameLogic/matchCalculation.js";
-import { addToCashBalanceByUserId } from "./database/repos/usersRepo.js"
+import { addToCashBalanceByUserId } from "./database/repos/usersRepo.js";
+
 export function initSocket(server, sessionMiddleware) {
   const io = new Server(server, {
     cors: {
@@ -19,7 +18,7 @@ export function initSocket(server, sessionMiddleware) {
 
   io.on("connection", (socket) => {
     const session = socket.request.session;
-    const user = session.user; // { email: 'aa@gmail.dk', nickname: 'user1', id: 1 }
+    const user = session.user;
 
     if (user) {
       // -------------------------------------------------------------------------------------------
@@ -136,7 +135,7 @@ export function initSocket(server, sessionMiddleware) {
               (p) => p.cars[trackId].user_car_id === roundWinnerCar.user_car_id
             );
             playerNrOfWins[roundWinner.userId] += 1;
-            endRace(trackId, roundWinner, roundWinnerCar)
+            endRace(trackId, roundWinner, roundWinnerCar);
           } else {
             endRace(trackId);
           }
@@ -157,12 +156,7 @@ export function initSocket(server, sessionMiddleware) {
 
         await endMatch(false, winner);
 
-
-        function endRace(
-          trackId,
-          winner = undefined,
-          winnerCar = undefined
-        ) {
+        function endRace(trackId, winner = undefined, winnerCar = undefined) {
           io.to(roomId).emit("raceResult", {
             trackId: trackId,
             winner:
@@ -201,7 +195,7 @@ export function initSocket(server, sessionMiddleware) {
             };
           }
           if (result.winner) {
-            await addToCashBalanceByUserId(result.winner.userId, 1000)
+            await addToCashBalanceByUserId(result.winner.userId, 1000);
           }
           io.to(roomId).emit("matchResult", result);
         }
@@ -210,9 +204,6 @@ export function initSocket(server, sessionMiddleware) {
       // -------------------------------------------------------------------------------------------
 
       // -------------------------------------------------------------------------------------------
-      
-
-  
 
       // -------------------------------------------------------------------------------------------
 
