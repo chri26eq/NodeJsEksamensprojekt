@@ -11,28 +11,30 @@ import {
 
 import { sendMail } from "../utils/mailer/mailer.js";
 import * as mailTemplate from "../utils/mailer/mailTemplates.js";
+import { validateCredential } from "../utils/signupVerification.js";
+import { HttpError } from "../utils/customErrors.js";
 
 const router = Router();
 
 router.post("/auth/signup", async (req, res) => {
-  const { email, password, nickname } = req.body;
+  const { email, nickname, password, passwordConfirm } = req.body;
   try {
-    if (await emailExists(email)) {
-      res.status(409).send({ error: "Email already exists" });
-    } else if (await nicknameExists(nickname)) {
-      res.status(409).send({ error: "Nickname already exists" });
-    } else {
-      await addUser(email, password, nickname);
-      sendMail(email, mailTemplate.welcomeSubject, mailTemplate.welcomeContent);
-      res.send({
-        message: "Signup successful",
-        email: email,
-        nickname: nickname,
-      });
-    }
+    await validateCredential(email, nickname, password, passwordConfirm);
+
+    await addUser(email, password, nickname);
+    sendMail(email, mailTemplate.welcomeSubject, mailTemplate.welcomeContent);
+    res.send({
+      message: "Signup successful",
+      email: email,
+      nickname: nickname,
+    });
   } catch (error) {
-    console.error("Error during signup:", error);
-    res.status(500).send({ error: "Internal server error" });
+    if (error instanceof HttpError) {
+      res.status(error.status).send({ error: error.message });
+    } else {
+      console.error("Error during signup:", error);
+      res.status(500).send({ error: "Internal server error" });
+    }
   }
 });
 
@@ -46,7 +48,7 @@ router.post("/auth/login", async (req, res) => {
       req.session.user = {
         email: email,
         nickname: nickname,
-        id: id
+        id: id,
       };
       res.send({
         message: "Login successful",

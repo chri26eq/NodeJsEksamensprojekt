@@ -59,12 +59,13 @@ export async function login(email, password) {
   }
 }
 
-export async function signUp(email, password, nickname) {
+export async function signUp(email, nickname, password, passwordConfirm) {
   try {
     const response = await fetchPost(URL + "/auth/signup", {
       email,
-      password,
       nickname,
+      password,
+      passwordConfirm,
     });
     let data = null;
 

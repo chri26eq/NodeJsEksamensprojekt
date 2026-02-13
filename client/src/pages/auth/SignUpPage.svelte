@@ -3,12 +3,7 @@
   import { Button } from "flowbite-svelte";
   import { toast } from "svelte-french-toast";
 
-  import {
-    areFieldsFilled,
-    doPasswordsMatch,
-    isValidEmail,
-    isValidPassword,
-  } from "../../utils/credentialsInputVerifier.js";
+  
   import { signUp } from "../../utils/auth.js";
 
   let email = $state("");
@@ -17,7 +12,7 @@
   let passwordConfirm = $state("");
 
   async function handleSignUp() {
-    const response = await signUp(email, password, nickname);
+    const response = await signUp(email, nickname, password, passwordConfirm);
 
     if (response.status === 200) {
       email = "";
@@ -25,8 +20,7 @@
       passwordConfirm = "";
       navigate("/login", { replace: true });
       return "Sign up successful!";
-    } else if (response.status === 409) {
-      email = "";
+    } else if (response.status === 400 || response.status === 409) {
       password = "";
       passwordConfirm = "";
       throw new Error(response.data.error);
@@ -36,49 +30,12 @@
     }
   }
 
-  function validateInputs() {
-    if (!areFieldsFilled(email, nickname, password, passwordConfirm)) {
-      toast.error("All fields must be filled out");
-      return false;
-    }
-
-    if (!isValidEmail(email)) {
-      toast.error("Please enter a valid email address");
-      return false;
-    }
-
-    if (!doPasswordsMatch(password, passwordConfirm)) {
-      toast.error("Passwords do not match. Please try again");
-      password = "";
-      passwordConfirm = "";
-      return false;
-    }
-
-    if (password.length < 8) {
-      toast.error("Password must be at least 8 characters long");
-      password = "";
-      passwordConfirm = "";
-      return false;
-    }
-
-    if (!isValidPassword(password)) {
-      toast.error(
-        "Password must contain at least one number, one uppercase letter, one lowercase letter, and one special character"
-      );
-      password = "";
-      passwordConfirm = "";
-      return false;
-    }
-
-    return true;
-  }
+  
 
   async function handleSubmit(event) {
     event.preventDefault();
 
-    if (!validateInputs()) {
-      return;
-    }
+    
 
     toast.promise(handleSignUp(), {
       loading: "Signing up...",
